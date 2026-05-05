@@ -258,8 +258,35 @@
 .cp-footer button:hover { background:#1d4ed8; }
 .cp-footer button svg { width:16px; height:16px; fill:none; stroke:#fff; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
 
-@media (max-width:900px) {
-  .my-rank-hero { flex-direction:column; gap:20px; }
-  .motivate-row { grid-template-columns:1fr; }
-  .podium-stage { gap:10px; }
+@media (max-width: 900px) {
+  .my-rank-hero { flex-direction: column; align-items: flex-start; gap: 24px; padding: 22px; }
+  .mrh-left { width: 100%; }
+  .mrh-right { width: 100%; border-top: 1px solid rgba(255,255,255,.1); padding-top: 15px; }
+  .mrh-rank { font-size: 4.2rem; }
+  .motivate-row { grid-template-columns: 1fr; gap: 12px; }
+  .podium-stage { gap: 10px; padding: 0 10px; }
+  .ps-avatar { width: 60px; height: 60px; font-size: 1.6rem; }
+  .ps-name { font-size: 1.2rem; }
+}
+
+@media (max-width: 640px) {
+  .lb-controls { flex-direction: column; align-items: stretch; }
+  .scope-tabs { width: 100%; }
+  .scope-tab { flex: 1; padding: 8px 10px; font-size: 1.2rem; }
+  .podium-arena { padding: 16px 10px 0; }
+  .ps-avatar { width: 50px; height: 50px; font-size: 1.4rem; }
+  .ps-medal { font-size: 1.1rem; }
+  .ps-rank { width: 22px; height: 22px; font-size: 1.2rem; }
+  .ps-gpa { font-size: 1.2rem; }
+  .ps-spec { display: none; }
+  .ach-badge { min-width: 70px; padding: 8px; }
+  .ach-icon { font-size: 1.5rem; }
+  .chat-popup { width: calc(100% - 48px); left: 24px; }
+}
+
+@media (max-width: 480px) {
+  .podium-stage { gap: 5px; }
+  .ps-avatar { width: 44px; height: 44px; font-size: 1.2rem; }
+  .mrh-rank { font-size: 3.5rem; }
+  .mrh-name { font-size: 1.6rem; }
 }

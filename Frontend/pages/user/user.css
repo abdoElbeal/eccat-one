@@ -303,6 +303,10 @@ body {
 .w-full { width: 100%; }
 .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
 
+/* ── Utility ── */
+.flex-wrap { flex-wrap: wrap; }
+.flex-gap { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+
 /* ════════════════════════════════════════════════════
    HAMBURGER MENU BUTTON (visible on mobile)
    ════════════════════════════════════════════════════ */
@@ -407,28 +411,33 @@ body {
   .stat-card-value { font-size: 2.2rem; }
 
   /* Tables: horizontal scroll */
-  .table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
-  .data-table { min-width: 480px; }
+  .table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; margin-inline: -12px; padding-inline: 12px; }
+  .data-table { min-width: 500px; }
 
   /* Grids */
   .grid-2 { grid-template-columns: 1fr; }
 
   /* Panel header */
-  .panel-header .btn { font-size: 1.1rem; padding: 7px 12px; }
+  .panel-header .btn { font-size: 1.15rem; padding: 8px 14px; flex: 1; justify-content: center; }
   .panel-header h2 { font-size: 1.35rem; }
 
   /* Pagination */
-  .pagination { gap: 6px; flex-wrap: wrap; justify-content: center; }
+  .pagination { gap: 8px; flex-direction: column; text-align: center; }
+  .page-btns { justify-content: center; flex-wrap: wrap; }
 
   /* Modal: full-width mobile */
-  .modal { border-radius: 14px; }
+  .modal { border-radius: 14px; width: 100%; max-width: 100%; margin: 10px; max-height: 95vh; }
   .modal-header { padding: 14px 16px; }
   .modal-body { padding: 16px; }
-  .modal-footer { padding: 12px 16px; gap: 8px; }
-  .modal-footer .btn { flex: 1; justify-content: center; }
+  .modal-footer { padding: 12px 16px; gap: 8px; flex-direction: column-reverse; }
+  .modal-footer .btn { width: 100%; justify-content: center; height: 44px; }
 
-  /* Badges in topbar */
+  /* User info in topbar */
   .topbar-user-info { display: none; }
+  
+  /* Flex gap stack */
+  .flex-gap { flex-direction: column; align-items: stretch; width: 100%; }
+  .flex-gap .btn { width: 100%; justify-content: center; }
 }
 
 /* ── Small phones ── */
