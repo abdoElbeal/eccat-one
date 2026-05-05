@@ -1,0 +1,62 @@
+/* Users-specific styles */
+
+.role-toggle {
+  display: flex;
+  gap: 0;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 10px;
+  overflow: hidden;
+}
+.role-toggle-btn {
+  flex: 1;
+  padding: 9px 20px;
+  border: none;
+  background: #f8fafc;
+  font-family: inherit;
+  font-size: 1.35rem;
+  font-weight: 600;
+  color: #64748b;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center; gap: 7px;
+  transition: background .2s, color .2s;
+}
+.role-toggle-btn svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.role-toggle-btn.active { background: #2463eb; color: #fff; }
+.role-toggle-btn:not(.active):hover { background: #e2e8f0; }
+
+/* Modal */
+.modal-overlay {
+  position: fixed; inset: 0;
+  background: rgba(15,23,42,.5);
+  z-index: 200;
+  display: flex; align-items: center; justify-content: center;
+  padding: 20px;
+  backdrop-filter: blur(4px);
+}
+.modal {
+  background: #fff;
+  border-radius: 16px;
+  width: 100%;
+  max-width: 480px;
+  box-shadow: 0 20px 60px rgba(0,0,0,.2);
+  overflow: hidden;
+}
+.modal-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 18px 24px;
+  border-bottom: 1px solid #f1f5f9;
+}
+.modal-header h3 { font-size: 1.6rem; font-weight: 700; color: #0f172a; }
+.modal-close {
+  width: 32px; height: 32px; border-radius: 8px;
+  border: none; background: #f1f5f9; cursor: pointer;
+  display: flex; align-items: center; justify-content: center; transition: background .2s;
+}
+.modal-close:hover { background: #e2e8f0; }
+.modal-close svg { width: 16px; height: 16px; fill: none; stroke: #64748b; stroke-width: 2; stroke-linecap: round; }
+.modal-body { padding: 20px 24px; }
+.modal-footer {
+  padding: 16px 24px;
+  border-top: 1px solid #f1f5f9;
+  display: flex; gap: 10px; justify-content: flex-end;
+}

@@ -1,0 +1,25 @@
+@import url("https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,300..900;1,300..900&family=Noto+Sans+Arabic:wght@100..900&family=Public+Sans:ital,wght@0,100..900;1,100..900&display=swap");
+
+:root {
+  --brand-color: #2463eb;
+  --light-bg-color: #f8fafc;
+  --primary-text-color: #475569;
+  --secadry-text-color: #64748b;
+  --black: #0f172a;
+  --white: #fff;
+  --nav-text-color: #334155;
+  --background-color: white;
+  --background-color-white-lite: rgba(255, 255, 255, 0.8);
+  --login-btn-color: #f1f5f9;
+  --nav-padding-color: #e2e8f0;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 62.5%;
+}

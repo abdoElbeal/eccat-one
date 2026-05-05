@@ -1,0 +1,30 @@
+/* Doctor courses CSS */
+.courses-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+}
+.course-card {
+  background: #fff; border-radius: 16px; padding: 22px 20px;
+  box-shadow: 0 2px 8px rgba(0,0,0,.06);
+  position: relative; overflow: hidden;
+  transition: transform .2s, box-shadow .2s;
+}
+.course-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,0,0,.1); }
+.cc-accent { position: absolute; right: 0; top: 0; bottom: 0; width: 4px; }
+.cc-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+.cc-icon { width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center; }
+.cc-icon.blue { background: #eff6ff; }
+.cc-icon.purple { background: #f5f3ff; }
+.cc-icon.green { background: #f0fdf4; }
+.cc-icon.orange { background: #fff7ed; }
+.cc-code { font-size: 1.15rem; }
+.cc-name { font-size: 1.7rem; font-weight: 800; color: #0f172a; margin-bottom: 6px; }
+.cc-desc { font-size: 1.25rem; color: #64748b; line-height: 1.5; margin-bottom: 16px; }
+.cc-stats { display: flex; gap: 0; margin-bottom: 14px; border: 1px solid #f1f5f9; border-radius: 10px; overflow: hidden; }
+.ccs { flex: 1; padding: 10px 8px; text-align: center; border-left: 1px solid #f1f5f9; }
+.ccs:last-child { border-left: none; }
+.ccs-value { display: block; font-size: 1.8rem; font-weight: 800; color: #0f172a; }
+.ccs-label { font-size: 1.1rem; color: #64748b; }
+.cc-progress-row { display: flex; justify-content: space-between; margin-bottom: 6px; font-size: 1.2rem; color: #64748b; }
+.cc-actions { display: flex; gap: 8px; margin-top: 14px; }

@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>إنشاء الحساب | EccatOne</title>
+    <meta name="description" content="إنشاء حسابك الشخصي على منصة EccatOne" />
+    <link rel="stylesheet" href="register-step1.css" />
+  </head>
+  <body>
+    <!-- Navbar -->
+    <nav>
+      <div class="navbar">
+        <a class="nav-brand" href="../../LandingPage.html">
+          <img src="../../assets/logo.svg" alt="EccatOne Logo" />
+          <span class="nav-brand-text">منصتي</span>
+        </a>
+        <ul class="nav-links">
+          <li><a href="../../LandingPage.html">الرئيسية</a></li>
+          <li><a href="../../LandingPage.html#about">حول</a></li>
+          <li><a href="../../LandingPage.html#help">المساعدة</a></li>
+          <li><a href="login.html" class="nav-cta">تسجيل الدخول</a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <!-- Main -->
+    <main>
+      <div class="auth-card" style="max-width: 900px">
+        <!-- Progress -->
+        <div class="progress-wrapper">
+          <div class="progress-meta">
+            <span class="progress-step-label">الخطوة 1/2: إنشاء الحساب</span>
+            <span class="progress-pct">50%</span>
+          </div>
+          <div class="progress-bar-track">
+            <div class="progress-bar-fill" style="width: 50%"></div>
+          </div>
+          <p class="progress-sub">خطوة واحدة إضافية للبدء</p>
+        </div>
+
+        <h1 class="form-title">إنشاء حسابك</h1>
+        <p class="form-subtitle">
+          يرجى إكمال البيانات التالية لإنشاء حسابك الشخصي
+        </p>
+
+        <form id="registerForm" novalidate onsubmit="event.preventDefault(); return false;">
+          <div class="register-layout">
+            <!-- Left column: form fields -->
+            <div class="register-form-col">
+              <!-- Name + National ID -->
+              <div class="input-row">
+                <div class="input-group">
+                  <label for="fullName">الاسم الكامل</label>
+                  <input
+                    type="text"
+                    id="fullName"
+                    placeholder="كما هو في الهوية"
+                    required
+                  />
+                </div>
+                <div class="input-group">
+                  <label for="nationalId">رقم الهوية الوطنية</label>
+                  <input
+                    type="text"
+                    id="nationalId"
+                    maxlength="14"
+                    inputmode="numeric"
+                    placeholder="14 رَقَم"
+                    required
+                  />
+                </div>
+              </div>
+
+              <!-- Registration Code + Email -->
+              <div class="input-row">
+                <div class="input-group">
+                  <label for="regCode">رمز التسجيل</label>
+                  <input
+                    type="text"
+                    id="regCode"
+                    placeholder="eccat-00000000"
+                    required
+                  />
+                </div>
+                <div class="input-group">
+                  <label for="email">البريد الإلكتروني</label>
+                  <input
+                    type="email"
+                    id="email"
+                    placeholder="example@domain.com"
+                    required
+                  />
+                </div>
+              </div>
+
+              <!-- Password row -->
+              <div class="input-row">
+                <div class="input-group">
+                  <label for="password">كلمة المرور</label>
+                  <input
+                    type="password"
+                    id="password"
+                    placeholder="••••••••"
+                    required
+                  />
+                </div>
+                <div class="input-group">
+                  <label for="confirmPassword">تأكيد كلمة المرور</label>
+                  <input
+                    type="password"
+                    id="confirmPassword"
+                    placeholder="••••••••"
+                    required
+                  />
+                </div>
+              </div>
+
+              <!-- Terms -->
+              <div class="checkbox-row">
+                <input type="checkbox" id="terms" required />
+                <label for="terms">
+                  أوافق على <a href="#">شروط الخدمة</a> و
+                  <a href="#">سياسة الخصوصية</a>.
+                </label>
+              </div>
+
+              <!-- Error Message Box -->
+              <div
+                id="errorBox"
+                style="
+                  display: none;
+                  background: #fee2e2;
+                  color: #b91c1c;
+                  padding: 10px;
+                  border-radius: 8px;
+                  margin-bottom: 14px;
+                  font-weight: 600;
+                  text-align: right;
+                "
+              ></div>
+
+              <!-- Buttons -->
+              <div class="btn-row">
+                <button
+                  type="button"
+                  class="btn-secondary"
+                  onclick="window.location.href = 'login.html'"
+                >
+                  إلغاء
+                </button>
+                <button type="button" class="btn-primary" id="registerBtn">
+                  متابعة وتأكيد البريد
+                </button>
+              </div>
+            </div>
+
+            <!-- Right column: avatar + nickname -->
+            <div class="register-side-col">
+              <div class="avatar-wrapper">
+                <div class="avatar-circle" id="avatarCircle"></div>
+                <p class="avatar-label">صورة الملف الشخصي</p>
+              </div>
+              <label for="avatarInput" class="btn-upload">تحميل صورة</label>
+              <input
+                type="file"
+                id="avatarInput"
+                accept="image/*"
+                style="display: none"
+              />
+              <div class="input-group">
+                <label for="nickname">الاسم المستعار</label>
+                <input
+                  type="text"
+                  id="nickname"
+                  placeholder="مثال: أحمد محمد"
+                  required
+                />
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </main>
+
+    <footer>
+      <p>© 2024 منصتي. جميع الحقوق محفوظة.</p>
+    </footer>
+
+    <script src="../../config.js"></script>
+    <script src="register-step1.js"></script>
+  </body>
+</html>

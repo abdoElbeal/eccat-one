@@ -1,0 +1,36 @@
+# dependencies
+node_modules/
+
+# env file (VERY IMPORTANT)
+.env
+
+# logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# runtime
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# coverage (if you test later)
+coverage/
+
+# build outputs (if you add build later)
+dist/
+build/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
+
+# optional: lock files (keep npm-lock usually, so DO NOT ignore it)
+# package-lock.json

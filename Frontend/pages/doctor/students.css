@@ -1,0 +1,28 @@
+/* Students page */
+.filter-select {
+  padding: 9px 14px;
+  border: 1.5px solid #e2e8f0; border-radius: 10px;
+  font-size: 1.3rem; font-family: inherit; color: #0f172a;
+  background: #fff; outline: none; direction: rtl; cursor: pointer;
+}
+.filter-select:focus { border-color: #2463eb; }
+
+.grade-pill {
+  display: inline-block; padding: 4px 12px; border-radius: 20px;
+  font-size: 1.3rem; font-weight: 700;
+}
+.grade-pill.excellent { background: #f0fdf4; color: #16a34a; }
+.grade-pill.good { background: #eff6ff; color: #2463eb; }
+.grade-pill.risk { background: #fef2f2; color: #ef4444; }
+
+.attend-bar { 
+  height: 6px; background: #e2e8f0; border-radius: 100px;
+  overflow: hidden; width: 70px; display: inline-block; margin-left: 6px; vertical-align: middle;
+}
+.attend-fill { height: 100%; border-radius: 100px; }
+
+.status-chip { display: inline-flex; align-items: center; padding: 4px 10px; border-radius: 20px; font-size: 1.2rem; font-weight: 600; }
+.status-chip.excellent { background: #f0fdf4; color: #16a34a; }
+.status-chip.good { background: #eff6ff; color: #2463eb; }
+.status-chip.risk { background: #fef2f2; color: #ef4444; }
+.status-chip.absent { background: #fff7ed; color: #ea580c; }

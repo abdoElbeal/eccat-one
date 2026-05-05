@@ -1,0 +1,60 @@
+/* ══════════════════════════════
+   login.css  –  Login page styles
+   ══════════════════════════════ */
+@import url("auth.css");
+
+/* ── Card width tweak for login ── */
+.auth-card {
+  max-width: 460px;
+}
+
+/* ── Form icon: university building ── */
+.form-icon {
+  background: #eff6ff;
+  border-radius: 18px;
+}
+
+/* ── remember / forgot row ── */
+.remember-row {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 22px;
+}
+
+.remember-row .right-col {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* ── submit button full bleed ── */
+#loginBtn {
+  font-size: 1.7rem;
+  letter-spacing: .02em;
+}
+
+/* ── "create account" footer ── */
+.form-footer-link {
+  margin-top: 22px;
+  font-size: 1.45rem;
+}
+
+/* ── Divider line (optional) ── */
+.divider {
+  width: 100%;
+  height: 1px;
+  background: var(--nav-padding-color);
+  margin: 4px 0;
+}
+
+/* ── Animate card entrance ── */
+.auth-card {
+  animation: slideUp .35s ease both;
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}

@@ -1,0 +1,54 @@
+/* Doctor Grades CSS */
+.grade-course-select {
+  padding: 9px 14px; border: 1.5px solid #e2e8f0; border-radius: 10px;
+  font-size: 1.3rem; font-family: inherit; color: #0f172a;
+  background: #fff; outline: none; direction: rtl; cursor: pointer;
+}
+.grade-course-select:focus { border-color: #2463eb; }
+
+/* Distribution cards */
+.dist-card {
+  background: #fff; border-radius: 12px; padding: 16px;
+  box-shadow: 0 2px 8px rgba(0,0,0,.05);
+  display: flex; flex-direction: column; gap: 6px;
+}
+.dist-label { font-size: 1.3rem; font-weight: 600; color: #475569; }
+.dist-count { font-size: 2.6rem; font-weight: 900; line-height: 1; }
+.dist-bar { background: #f1f5f9; border-radius: 4px; height: 6px; overflow: hidden; }
+
+/* Inline grade inputs */
+.grade-input {
+  width: 64px; padding: 6px 8px; text-align: center;
+  border: 1.5px solid #e2e8f0; border-radius: 8px;
+  font-size: 1.3rem; font-family: inherit; outline: none;
+  transition: border-color .2s;
+}
+.grade-input:focus { border-color: #2463eb; }
+.grade-input.changed { border-color: #f59e0b; background: #fffbeb; }
+.grade-input.error { border-color: #ef4444; background: #fef2f2; }
+
+.total-display {
+  font-size: 1.4rem; font-weight: 800; color: #0f172a;
+}
+.total-display.unset { color: #94a3b8; }
+
+.grade-letter {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 36px; height: 36px; border-radius: 50%;
+  font-size: 1.25rem; font-weight: 800;
+}
+.grade-letter.unset { background: #f1f5f9; color: #94a3b8; }
+
+.grade-save-btn {
+  width: 32px; height: 32px; border-radius: 8px; border: none;
+  background: #eff6ff; color: #2463eb; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: background .2s;
+}
+.grade-save-btn:hover { background: #dbeafe; }
+.grade-save-btn svg { width: 15px; height: 15px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.grade-save-btn.saved { background: #f0fdf4; color: #16a34a; }
+
+@media (max-width: 1100px) {
+  .stat-grid[style*="repeat(5"] { grid-template-columns: repeat(3, 1fr) !important; }
+}

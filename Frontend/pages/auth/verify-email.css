@@ -1,0 +1,108 @@
+/* ════════════════════════════════════════════════════
+   verify-email.css  –  Email OTP Verification Step 3/3
+   ════════════════════════════════════════════════════ */
+@import url("auth.css");
+
+/* ── Card entrance ── */
+.auth-split {
+  animation: fadeIn .4s ease both;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Widen left form ── */
+.auth-split-form { padding: 48px 44px; }
+
+/* ── OTP group spacing ── */
+.otp-group {
+  margin: 20px 0 28px;
+}
+
+/* ── Individual OTP box ── */
+.otp-input {
+  width: 58px;
+  height: 64px;
+  font-size: 2.4rem;
+  font-weight: 800;
+  border-radius: 12px;
+  background: #fff;
+}
+.otp-input.filled {
+  background: #eff6ff;
+  border-color: var(--brand-color);
+  color: var(--brand-color);
+}
+.otp-input.error {
+  border-color: #ef4444;
+  background: #fef2f2;
+  animation: shake .4s ease;
+}
+
+@keyframes shake {
+  0%,100% { transform: translateX(0); }
+  25%      { transform: translateX(-6px); }
+  75%      { transform: translateX(6px); }
+}
+
+/* ── Success state ── */
+.otp-input.success {
+  border-color: #22c55e;
+  background: #f0fdf4;
+  color: #16a34a;
+}
+
+/* ── Verify button ── */
+#verifyBtn { font-size: 1.7rem; letter-spacing: .02em; }
+#verifyBtn.success-state { background: #16a34a; }
+
+/* ── Resend section ── */
+.resend-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  margin-top: 20px;
+}
+
+/* ── Help / change-email row ── */
+.help-row { margin-top: 24px; }
+.help-row .change-email {
+  color: var(--brand-color);
+  font-weight: 600;
+  text-decoration: none;
+  font-size: 1.35rem;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  transition: gap .2s;
+}
+.help-row .change-email:hover { gap: 8px; }
+
+/* ── Right panel: envelope icon ring ── */
+.auth-split-panel {
+  background: linear-gradient(155deg, #2463eb 0%, #1a3fbf 55%, #162fa0 100%);
+}
+
+.panel-icon {
+  width: 90px;
+  height: 90px;
+  background: rgba(255,255,255,.2);
+  border: 2px solid rgba(255,255,255,.35);
+}
+
+/* ── Security badge ── */
+.security-badge {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(255,255,255,.12);
+  border-radius: 10px;
+  padding: 10px 16px;
+  margin-top: 28px;
+  font-size: 1.3rem;
+  text-align: right;
+}
+.security-badge svg { width: 20px; height: 20px; fill: rgba(255,255,255,.8); flex-shrink: 0; }

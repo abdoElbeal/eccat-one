@@ -1,0 +1,314 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>إدارة المقررات | لوحة التحكم</title>
+  <link rel="stylesheet" href="admin.css" />
+  <link rel="stylesheet" href="courses.css" />
+  <style>
+    /* FORCE grades section always visible - cannot be hidden by any JS or CSS */
+    .grades-always-section {
+      display: block !important;
+      visibility: visible !important;
+      opacity: 1 !important;
+    }
+  </style>
+</head>
+<body>
+<div class="admin-layout">
+    <aside class="sidebar">
+    <a href="dashboard.html" class="sidebar-brand">
+      <div class="sidebar-brand-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M12 3 2 8l10 5 10-5-10-5ZM2 15l10 5 10-5M2 10l10 5 10-5"/></svg></div>
+      <div class="sidebar-brand-text"><strong>EccatOne</strong><span>الإدارة</span></div>
+    </a>
+    <nav class="sidebar-nav">
+
+      <a href="dashboard.html"    class="nav-item"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>لوحة التحكم</a>
+      <a href="users.html"        class="nav-item"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>المستخدمين</a>
+      <a href="departments.html"  class="nav-item"><svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>الأقسام</a>
+      <a href="courses.html"    class="nav-item active"><svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>المواد الدراسية</a>
+      <a href="support.html"      class="nav-item"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>رسائل الدعم</a>
+      <a href="groups.html"       class="nav-item"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>المجموعات</a>
+      <a href="schedules.html"    class="nav-item"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>الجداول</a>
+      <a href="grades.html"       class="nav-item"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>الدرجات</a>
+      <a href="reg-codes.html"    class="nav-item"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>أكواد التسجيل</a>
+      <a href="announcements.html" class="nav-item"><svg viewBox="0 0 24 24"><path d="M22 17H2a3 3 0 0 0 3-3V9a7 7 0 0 1 14 0v5a3 3 0 0 0 3 3zm-8.27 4a2 2 0 0 1-3.46 0"/></svg>الإعلانات</a>
+    </nav>
+    <div class="sidebar-footer">
+      <button class="nav-item logout" id="logoutBtn"><svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/></svg>تسجيل الخروج</button>
+    </div>
+  </aside>
+
+  <div class="admin-main">
+    <header class="topbar">
+      <div class="topbar-avatar" id="topbarAvatar"></div>
+      <button class="topbar-bell" aria-label="إشعارات"><svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 0 1-3.46 0"/></svg></button>
+      <span class="topbar-title">نظام إدارة الكلية</span>
+    </header>
+
+    <main class="page-body">
+      <div class="page-header" style="margin-bottom:20px;">
+        <h1>المواد الدراسية</h1>
+        <p>تحكم كامل في المواد والامتحانات</p>
+      </div>
+
+      <!-- ═══ TABS ═══ -->
+      <div class="admin-tabs">
+        <button class="admin-tab active" data-tab="subjects" onclick="switchTab('subjects')">
+          <svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+          المواد الدراسية <span class="tab-badge" id="tabBadgeSubjects">—</span>
+        </button>
+        <button class="admin-tab" data-tab="exams" onclick="switchTab('exams')">
+          <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          الامتحانات <span class="tab-badge" id="tabBadgeExams">—</span>
+        </button>
+      </div>
+
+      <!-- ═══ SUBJECTS TAB ═══ -->
+      <div id="tab-subjects" class="tab-panel">
+        <div class="flex-gap mb-16" style="margin-top:16px;">
+          <button class="btn btn-primary" onclick="openSubjectModal()">+ إضافة مادة</button>
+          <div class="search-box" style="flex:1; max-width:300px;">
+            <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input type="text" id="courseSearch" placeholder="بحث..." />
+          </div>
+          <select id="courseDeptFilter"><option value="">كل الأقسام</option></select>
+          <select id="courseYearFilter">
+            <option value="">كل السنوات</option>
+            <option value="1">سنة 1</option><option value="2">سنة 2</option>
+            <option value="3">سنة 3</option><option value="4">سنة 4</option>
+          </select>
+          <select id="courseSemFilter">
+            <option value="">كل الفصول</option>
+            <option value="1">فصل 1</option><option value="2">فصل 2</option>
+          </select>
+        </div>
+        <div class="panel">
+          <div class="table-wrap">
+            <table class="admin-table">
+              <thead><tr><th>المادة</th><th>القسم</th><th>السنة/الفصل</th><th>الدكتور</th><th>الطلاب</th><th>الإجراءات</th></tr></thead>
+              <tbody id="coursesTable"><tr><td colspan="6" class="text-center" style="padding:30px;">جارٍ التحميل...</td></tr></tbody>
+            </table>
+          </div>
+          <div class="pagination">
+            <span id="coursePagInfo"></span>
+            <div class="page-btns">
+              <button class="page-btn" id="cpPrev">‹</button>
+              <button class="page-btn" id="cpNext">›</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══ EXAMS TAB ═══ -->
+      <div id="tab-exams" class="tab-panel" style="display:none;">
+        <div class="flex-gap mb-16" style="margin-top:16px;">
+          <button class="btn btn-primary" onclick="openExamModal()">+ إضافة امتحان</button>
+          <select id="examSubjectFilter" style="padding:9px 14px; border:1.5px solid #e2e8f0; border-radius:10px; font-family:inherit; font-size:1.3rem; min-width:200px;"><option value="">كل المواد</option></select>
+          <select id="examGroupFilter" style="padding:9px 14px; border:1.5px solid #e2e8f0; border-radius:10px; font-family:inherit; font-size:1.3rem;"><option value="">كل المجموعات</option></select>
+        </div>
+        <div class="panel">
+          <div class="table-wrap">
+            <table class="admin-table">
+              <thead><tr><th>المادة</th><th>النوع</th><th>التاريخ</th><th>الوقت</th><th>المكان</th><th>المجموعة</th><th>إجراءات</th></tr></thead>
+              <tbody id="examsTable"><tr><td colspan="7" class="text-center" style="padding:30px;">جارٍ التحميل...</td></tr></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══ GRADES ALWAYS VISIBLE ═══ -->
+      <div class="grades-always-section">
+        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:16px; flex-wrap:wrap; gap:12px;">
+          <h2>📊 درجات الطلاب</h2>
+          <div class="flex-gap">
+            <select id="gradeSubjectSel" style="padding:9px 16px; border:1.5px solid #e2e8f0; border-radius:10px; font-family:inherit; font-size:1.3rem; min-width:230px;"><option value="">اختر مادة...</option></select>
+            <button class="btn btn-primary" onclick="loadGradesBySubject()">عرض الدرجات</button>
+            <button class="btn" onclick="openStudentBulkGradeModal()" style="background:#7c3aed; color:#fff; border:none; padding:10px 18px; border-radius:10px; font-family:inherit; font-size:1.3rem; font-weight:600; cursor:pointer;">رصد شامل لطالب</button>
+          </div>
+        </div>
+        <div id="gradesPanel">
+          <div style="background:#fff; border:1.5px solid #e2e8f0; border-radius:14px; padding:60px; text-align:center; color:#94a3b8; font-size:1.4rem;">
+            <svg viewBox="0 0 24 24" style="width:48px;height:48px;stroke:#cbd5e1;margin-bottom:12px;display:block;margin-inline:auto;"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            اختر مادة من القائمة لعرض درجات طلابها
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+
+<!-- Modal: Subject -->
+<div id="subjectModal" class="modal-overlay" style="display:none;">
+  <div class="modal" style="max-width:520px;">
+    <div class="modal-header">
+      <h3 id="subjectModalTitle">إضافة مادة</h3>
+      <button class="modal-close" onclick="closeSubjectModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:13px;">
+        <div class="field-group"><label>الاسم *</label><input type="text" id="sm_name" /></div>
+        <div class="field-group"><label>الكود *</label><input type="text" id="sm_code" /></div>
+      </div>
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:13px;">
+        <div class="field-group"><label>القسم *</label><select id="sm_dept"><option value="">...</option></select></div>
+        <div class="field-group"><label>العام الأكاديمي</label><input type="text" id="sm_academicYear" value="2025/2026" /></div>
+      </div>
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:13px;">
+        <div class="field-group"><label>السنة</label>
+          <select id="sm_yearLevel"><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option></select>
+        </div>
+        <div class="field-group"><label>الفصل</label>
+          <select id="sm_semester"><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option></select>
+        </div>
+      </div>
+      <div class="field-group"><label>الوصف</label><textarea id="sm_desc" rows="2"></textarea></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeSubjectModal()">إلغاء</button>
+      <button class="btn btn-primary" onclick="saveSubject()" id="subjectModalSave">إضافة</button>
+    </div>
+    <input type="hidden" id="sm_editId" />
+  </div>
+</div>
+
+<!-- Modal: Assign -->
+<div id="assignModal" class="modal-overlay" style="display:none;">
+  <div class="modal" style="max-width:400px;">
+    <div class="modal-header">
+      <h3>تعيين دكتور للمادة</h3>
+      <button class="modal-close" onclick="closeAssignModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <p id="assignSubjectName" style="font-weight:600; color:#64748b; margin-bottom:14px;"></p>
+      <div class="field-group"><label>اختر الدكتور</label><select id="assignDoctorSel"><option value="">بدون تعيين</option></select></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeAssignModal()">إلغاء</button>
+      <button class="btn btn-primary" onclick="confirmAssign()">تعيين</button>
+    </div>
+    <input type="hidden" id="assignSubjectId" />
+  </div>
+</div>
+
+<!-- Modal: Exam -->
+<div id="examModal" class="modal-overlay" style="display:none;">
+  <div class="modal" style="max-width:480px;">
+    <div class="modal-header">
+      <h3 id="examModalTitle">إضافة امتحان</h3>
+      <button class="modal-close" onclick="closeExamModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="field-group"><label>المادة *</label><select id="em_subject"><option value="">اختر...</option></select></div>
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:13px;">
+        <div class="field-group"><label>النوع</label>
+          <select id="em_type"><option value="ميدتيرم">ميدتيرم</option><option value="نهائي">نهائي</option><option value="كويز">كويز</option><option value="اختبار عملي">عملي</option></select>
+        </div>
+        <div class="field-group"><label>المجموعة</label><select id="em_group"><option value="">اختر...</option></select></div>
+      </div>
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:13px;">
+        <div class="field-group"><label>التاريخ *</label><input type="date" id="em_date" /></div>
+        <div class="field-group"><label>الوقت *</label><input type="time" id="em_time" /></div>
+      </div>
+      <div class="field-group"><label>المكان *</label><input type="text" id="em_location" /></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeExamModal()">إلغاء</button>
+      <button class="btn btn-primary" onclick="saveExam()" id="examModalSave">حفظ</button>
+    </div>
+    <input type="hidden" id="em_editId" />
+  </div>
+</div>
+
+<!-- Modal: Bulk Grades -->
+<div id="studentBulkGradeModal" class="modal-overlay" style="display:none;">
+  <div class="modal" style="max-width:860px; width:95%;">
+    <div class="modal-header">
+      <h3>رصد درجات شامل للطالب</h3>
+      <button class="modal-close" onclick="closeStudentBulkGradeModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div style="display:grid; grid-template-columns:1.5fr 1fr 1fr; gap:14px; margin-bottom:18px; background:#f8fafc; padding:14px; border-radius:12px; border:1px solid #e2e8f0;">
+        <div class="field-group"><label>الطالب</label><select id="bulk_studentSelect" onchange="loadStudentSubjectsForBulk()"><option value="">اختر...</option></select></div>
+        <div class="field-group"><label>العام الأكاديمي</label><input type="text" id="bulk_academicYear" value="2025/2026" onchange="loadStudentSubjectsForBulk()" /></div>
+        <div class="field-group"><label>الفصل</label>
+          <select id="bulk_semester" onchange="loadStudentSubjectsForBulk()">
+            <option value="1">الفصل الأول</option><option value="2" selected>الفصل الثاني</option>
+          </select>
+        </div>
+      </div>
+      <div id="bulk_subjectsContainer" style="max-height:420px; overflow-y:auto;">
+        <div style="text-align:center; padding:40px; color:#94a3b8;">اختر طالباً لعرض مواده</div>
+      </div>
+    </div>
+    <div class="modal-footer" style="justify-content:space-between;">
+      <span id="bulk_statusMsg" style="font-weight:600;"></span>
+      <div style="display:flex; gap:10px;">
+        <button class="btn btn-secondary" onclick="closeStudentBulkGradeModal()">إلغاء</button>
+        <button class="btn btn-primary" id="bulkSaveBtn" onclick="saveBulkGrades()" disabled style="background:#22c55e;">حفظ الكل</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Grade Edit -->
+<div id="gradeModal" class="modal-overlay" style="display:none;">
+  <div class="modal" style="max-width:460px;">
+    <div class="modal-header">
+      <h3 id="gradeModalTitle">تعديل درجة الطالب</h3>
+      <button class="modal-close" onclick="closeGradeModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="field-group">
+        <label>الطالب</label>
+        <select id="gm_student"><option value="">اختر...</option></select>
+      </div>
+      <div class="field-group">
+        <label>المادة</label>
+        <input type="text" id="gm_subjectName" readonly style="background:#f8fafc; color:#64748b;" />
+      </div>
+      <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px;">
+        <div class="field-group">
+          <label>أعمال <small style="color:#94a3b8;">/20</small></label>
+          <input type="number" id="gm_activities" min="0" max="20" placeholder="0" />
+        </div>
+        <div class="field-group">
+          <label>ميدتيرم <small style="color:#94a3b8;">/30</small></label>
+          <input type="number" id="gm_midTerm" min="0" max="30" placeholder="0" />
+        </div>
+        <div class="field-group">
+          <label>نهائي <small style="color:#94a3b8;">/50</small></label>
+          <input type="number" id="gm_final" min="0" max="50" placeholder="0" />
+        </div>
+      </div>
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+        <div class="field-group">
+          <label>الفصل</label>
+          <select id="gm_semester"><option value="1">الفصل الأول</option><option value="2">الفصل الثاني</option></select>
+        </div>
+        <div class="field-group">
+          <label>العام الأكاديمي</label>
+          <input type="text" id="gm_academicYear" placeholder="2025/2026" />
+        </div>
+      </div>
+      <div id="gm_totalPreview" style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:10px; padding:12px 16px; text-align:center; font-size:1.3rem; color:#475569; margin-top:6px; display:none;">
+        الإجمالي: <strong id="gm_totalVal" style="color:#2463eb; font-size:1.5rem;">—</strong> / 100
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeGradeModal()">إلغاء</button>
+      <button class="btn btn-primary" onclick="saveGrade()">حفظ الدرجة</button>
+    </div>
+    <input type="hidden" id="gm_editId" />
+    <input type="hidden" id="gm_subjectId" />
+  </div>
+</div>
+
+<script src="../../config.js"></script>
+<script src="../shared/portal-utils.js"></script>
+<script src="courses.js"></script>
+
+</body>
+</html>

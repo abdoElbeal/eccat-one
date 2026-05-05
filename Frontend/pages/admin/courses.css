@@ -1,0 +1,153 @@
+/* ─── Admin Courses Page Styles ─── */
+
+/* Grades section always visible, separator from tabs */
+.grades-always-section {
+  margin-top: 32px;
+  padding-top: 24px;
+  border-top: 2px solid #f1f5f9;
+}
+.grades-always-section h2 {
+  font-size: 2rem;
+  font-weight: 800;
+  color: #1e293b;
+  margin: 0 0 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+
+.admin-tabs {
+  display: flex;
+  gap: 8px;
+  margin: 20px 0;
+  border-bottom: 1px solid #e2e8f0;
+  padding-bottom: 2px;
+}
+
+.admin-tab {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 24px;
+  background: transparent;
+  border: none;
+  border-bottom: 3px solid transparent;
+  font-size: 1.45rem;
+  font-weight: 600;
+  color: #64748b;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+  font-family: inherit;
+}
+
+.admin-tab svg {
+  width: 18px;
+  height: 18px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 2;
+}
+
+.admin-tab:hover {
+  color: #2463eb;
+  background: #f8fafc;
+}
+
+.admin-tab.active {
+  color: #2463eb;
+  border-bottom-color: #2463eb;
+}
+
+.tab-badge {
+  background: #f1f5f9;
+  color: #64748b;
+  font-size: 1.1rem;
+  padding: 2px 8px;
+  border-radius: 20px;
+  font-weight: 700;
+  margin-right: 4px;
+}
+
+.admin-tab.active .tab-badge {
+  background: #eff6ff;
+  color: #2463eb;
+}
+
+/* Panel Body Adjustments */
+.tab-panel {
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Filter Bar Improvements */
+.filter-bar {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.filter-bar select, 
+.filter-bar .search-box {
+  flex: 1;
+  min-width: 160px;
+}
+
+/* Action Buttons in Tables */
+.btn-icon {
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+  border: 1px solid #e2e8f0;
+  background: #fff;
+  color: #64748b;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  margin-right: 5px;
+}
+
+.btn-icon:hover {
+  border-color: #2463eb;
+  color: #2463eb;
+}
+
+/* Grade Inputs in Modal */
+.field-group small {
+  display: block;
+  margin-top: 2px;
+}
+
+/* Flex Container for Top Actions */
+.flex-gap {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+/* Summary Banner (inherited from before, but polished) */
+.update-banner {
+  background: linear-gradient(135deg, #1e3a8a 0%, #2463eb 100%);
+  border-radius: 14px;
+  padding: 24px;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 4px 15px rgba(36,99,235,0.2);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .admin-tabs { overflow-x: auto; white-space: nowrap; }
+  .filter-bar { flex-direction: column; align-items: stretch; }
+  .flex-gap { flex-direction: column; align-items: stretch; }
+}

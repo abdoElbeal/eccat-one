@@ -1,0 +1,475 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>إدارة المجموعات | لوحة المشرف</title>
+    <meta name="description" content="إدارة المجموعات الطلابية وتوزيع الطلاب على المجموعات" />
+    <link rel="stylesheet" href="admin.css" />
+    <style>
+      /* ── Groups Page Specific ── */
+      .groups-hero {
+        background: linear-gradient(135deg, #1e3a8a 0%, #2463eb 50%, #7c3aed 100%);
+        border-radius: 20px;
+        padding: 28px 32px;
+        color: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 28px;
+        position: relative;
+        overflow: hidden;
+      }
+      .groups-hero::before {
+        content: '';
+        position: absolute;
+        top: -40px; right: -40px;
+        width: 200px; height: 200px;
+        background: rgba(255,255,255,.06);
+        border-radius: 50%;
+      }
+      .groups-hero::after {
+        content: '';
+        position: absolute;
+        bottom: -60px; left: 60px;
+        width: 280px; height: 280px;
+        background: rgba(255,255,255,.04);
+        border-radius: 50%;
+      }
+      .hero-text h1 { font-size: 2.6rem; font-weight: 800; margin-bottom: 6px; }
+      .hero-text p  { font-size: 1.35rem; opacity: .8; }
+      .hero-stats { display: flex; gap: 24px; position: relative; z-index: 1; }
+      .hero-stat {
+        text-align: center;
+        background: rgba(255,255,255,.12);
+        border: 1px solid rgba(255,255,255,.2);
+        border-radius: 14px;
+        padding: 14px 22px;
+        backdrop-filter: blur(8px);
+      }
+      .hero-stat .val { font-size: 2.4rem; font-weight: 800; }
+      .hero-stat .lbl { font-size: 1.1rem; opacity: .75; margin-top: 2px; }
+
+      /* ── Filter Strip ── */
+      .filter-strip {
+        display: flex; gap: 12px; align-items: center; flex-wrap: wrap;
+        background: #fff; border-radius: 14px;
+        padding: 16px 20px; margin-bottom: 20px;
+        box-shadow: 0 2px 8px rgba(0,0,0,.05);
+      }
+      .filter-strip select, .filter-strip input {
+        padding: 9px 14px;
+        border: 1.5px solid #e2e8f0;
+        border-radius: 10px;
+        font-size: 1.3rem;
+        font-family: inherit;
+        color: #0f172a;
+        background: #f8fafc;
+        outline: none;
+        direction: rtl;
+        transition: border-color .2s;
+      }
+      .filter-strip select:focus, .filter-strip input:focus { border-color: #2463eb; background: #fff; }
+      .filter-strip .spacer { flex: 1; }
+
+      /* ── Group Cards Grid ── */
+      .groups-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+        gap: 18px;
+        margin-bottom: 28px;
+      }
+      .group-card {
+        background: #fff;
+        border-radius: 18px;
+        box-shadow: 0 2px 12px rgba(0,0,0,.06);
+        overflow: hidden;
+        transition: transform .2s, box-shadow .2s;
+        cursor: pointer;
+        border: 1.5px solid transparent;
+      }
+      .group-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 24px rgba(0,0,0,.12);
+        border-color: #dbeafe;
+      }
+      .group-card-header {
+        background: linear-gradient(135deg, #eff6ff, #f5f3ff);
+        padding: 20px;
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+      }
+      .group-card-icon {
+        width: 52px; height: 52px;
+        background: linear-gradient(135deg, #2463eb, #7c3aed);
+        border-radius: 14px;
+        display: flex; align-items: center; justify-content: center;
+        flex-shrink: 0;
+      }
+      .group-card-icon svg { width: 26px; height: 26px; fill: #fff; }
+      .group-card-meta { flex: 1; margin-right: 14px; }
+      .group-card-meta h3 { font-size: 1.6rem; font-weight: 700; color: #0f172a; margin-bottom: 3px; }
+      .group-card-meta .code-pill {
+        display: inline-flex; align-items: center;
+        background: #e0e7ff; color: #4338ca;
+        font-size: 1.15rem; font-weight: 700;
+        padding: 2px 10px; border-radius: 20px;
+        font-family: monospace;
+      }
+      .group-card-actions { display: flex; gap: 6px; }
+
+      .group-card-body { padding: 18px 20px; }
+      .gc-info-row {
+        display: flex; gap: 8px; margin-bottom: 14px; flex-wrap: wrap;
+      }
+      .gc-chip {
+        display: inline-flex; align-items: center; gap: 5px;
+        background: #f1f5f9; color: #475569;
+        font-size: 1.2rem; font-weight: 600;
+        padding: 4px 12px; border-radius: 20px;
+      }
+      .gc-chip svg { width: 13px; height: 13px; fill: #64748b; flex-shrink: 0; }
+
+      /* Capacity bar */
+      .capacity-block { margin-bottom: 16px; }
+      .capacity-row {
+        display: flex; justify-content: space-between;
+        font-size: 1.25rem; margin-bottom: 6px;
+      }
+      .capacity-row .cap-label { color: #64748b; font-weight: 500; }
+      .capacity-row .cap-val   { font-weight: 700; color: #0f172a; }
+      .cap-bar { height: 6px; background: #e2e8f0; border-radius: 100px; overflow: hidden; }
+      .cap-fill { height: 100%; border-radius: 100px; transition: width .4s; }
+      .cap-fill.low    { background: #22c55e; }
+      .cap-fill.mid    { background: #f59e0b; }
+      .cap-fill.full   { background: #ef4444; }
+
+      .group-card-footer {
+        padding: 14px 20px;
+        border-top: 1px solid #f1f5f9;
+        display: flex; gap: 8px;
+      }
+      .group-card-footer .btn { flex: 1; justify-content: center; font-size: 1.2rem; padding: 8px; }
+
+      /* ── Empty State ── */
+      .empty-state {
+        text-align: center; padding: 60px 24px;
+        background: #fff; border-radius: 18px;
+        box-shadow: 0 2px 8px rgba(0,0,0,.05);
+      }
+      .empty-state svg { width: 80px; height: 80px; stroke: #cbd5e1; fill: none; margin-bottom: 16px; }
+      .empty-state h3 { font-size: 1.8rem; font-weight: 700; color: #64748b; margin-bottom: 8px; }
+      .empty-state p  { font-size: 1.3rem; color: #94a3b8; }
+
+      /* ── Modal Overrides ── */
+      .modal-2col { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+      .search-student-input {
+        display: flex; gap: 8px; margin-bottom: 12px;
+      }
+      .search-student-input input { flex: 1; }
+
+      /* Student result item */
+      .sr-item {
+        display: flex; align-items: center; gap: 12px;
+        padding: 12px 14px; border-bottom: 1px solid #f1f5f9;
+        transition: background .15s;
+      }
+      .sr-item:last-child { border-bottom: none; }
+      .sr-item:hover { background: #f8fafc; }
+      .sr-avatar {
+        width: 36px; height: 36px; border-radius: 50%;
+        background: linear-gradient(135deg, #2463eb, #7c3aed);
+        color: #fff; font-size: 1.3rem; font-weight: 700;
+        display: flex; align-items: center; justify-content: center;
+        flex-shrink: 0;
+      }
+      .sr-info { flex: 1; }
+      .sr-info strong { font-size: 1.3rem; color: #0f172a; display: block; }
+      .sr-info small  { font-size: 1.15rem; color: #94a3b8; }
+
+      /* Members table inside modal */
+      .members-table tbody tr td:first-child { padding-right: 0; }
+      .mem-avatar {
+        width: 32px; height: 32px; border-radius: 50%;
+        background: #eff6ff; color: #2463eb;
+        font-size: 1.15rem; font-weight: 700;
+        display: inline-flex; align-items: center; justify-content: center;
+      }
+      .mem-row { display: flex; align-items: center; gap: 10px; }
+
+      /* Empty members */
+      .members-empty {
+        text-align: center; padding: 30px;
+        color: #94a3b8; font-size: 1.3rem;
+      }
+
+      /* Tab buttons in modal */
+      .modal-tabs {
+        display: flex; gap: 0;
+        border-bottom: 2px solid #f1f5f9;
+        margin-bottom: 20px;
+      }
+      .modal-tab {
+        flex: 1; padding: 10px;
+        background: none; border: none;
+        font-size: 1.3rem; font-weight: 600;
+        color: #94a3b8; cursor: pointer;
+        border-bottom: 2.5px solid transparent;
+        margin-bottom: -2px; transition: color .15s, border-color .15s;
+        font-family: inherit;
+      }
+      .modal-tab.active { color: #2463eb; border-bottom-color: #2463eb; }
+
+      /* Sections within members modal */
+      .tab-section { display: none; }
+      .tab-section.active { display: block; }
+
+      /* Toast notification */
+      .toast {
+        position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%) translateY(80px);
+        background: #0f172a; color: #fff;
+        padding: 12px 24px; border-radius: 12px;
+        font-size: 1.3rem; font-weight: 600;
+        box-shadow: 0 8px 24px rgba(0,0,0,.3);
+        z-index: 9999;
+        transition: transform .3s ease, opacity .3s ease;
+        opacity: 0;
+        white-space: nowrap;
+      }
+      .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+      .toast.success { background: #16a34a; }
+      .toast.error   { background: #dc2626; }
+    </style>
+  </head>
+  <body>
+    <div class="admin-layout">
+      <!-- Sidebar -->
+        <aside class="sidebar">
+    <a href="dashboard.html" class="sidebar-brand">
+      <div class="sidebar-brand-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M12 3 2 8l10 5 10-5-10-5ZM2 15l10 5 10-5M2 10l10 5 10-5"/></svg></div>
+      <div class="sidebar-brand-text"><strong>EccatOne</strong><span>الإدارة</span></div>
+    </a>
+    <nav class="sidebar-nav">
+
+      <a href="dashboard.html"    class="nav-item"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>لوحة التحكم</a>
+      <a href="users.html"        class="nav-item"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>المستخدمين</a>
+      <a href="departments.html"  class="nav-item"><svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>الأقسام</a>
+      <a href="courses.html"      class="nav-item"><svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>المواد الدراسية</a>
+      <a href="support.html"      class="nav-item"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>رسائل الدعم</a>
+      <a href="groups.html"    class="nav-item active"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>المجموعات</a>
+      <a href="schedules.html"    class="nav-item"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>الجداول</a>
+      <a href="grades.html"       class="nav-item"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>الدرجات</a>
+      <a href="reg-codes.html"    class="nav-item"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>أكواد التسجيل</a>
+      <a href="announcements.html" class="nav-item"><svg viewBox="0 0 24 24"><path d="M22 17H2a3 3 0 0 0 3-3V9a7 7 0 0 1 14 0v5a3 3 0 0 0 3 3zm-8.27 4a2 2 0 0 1-3.46 0"/></svg>الإعلانات</a>
+    </nav>
+    <div class="sidebar-footer">
+      <button class="nav-item logout" id="logoutBtn"><svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/></svg>تسجيل الخروج</button>
+    </div>
+  </aside>
+
+      <!-- Main -->
+      <div class="admin-main">
+        <header class="topbar">
+          <div class="topbar-avatar" id="topbarAvatar">
+            <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          </div>
+          <button class="topbar-bell" aria-label="إشعارات">
+            <svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+          </button>
+          <div class="topbar-search">
+            <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+            <input type="text" id="topSearch" placeholder="بحث سريع في المجموعات..." />
+          </div>
+          <span class="topbar-title">إدارة المجموعات</span>
+        </header>
+
+        <main class="page-body">
+          <!-- Hero Banner -->
+          <div class="groups-hero">
+            <div class="hero-text" style="position:relative;z-index:1;">
+              <h1>إدارة المجموعات الطلابية</h1>
+              <p>نظّم الطلاب في مجموعات دراسية وأدر توزيعهم بكفاءة</p>
+            </div>
+            <div class="hero-stats">
+              <div class="hero-stat">
+                <div class="val" id="heroTotalGroups">—</div>
+                <div class="lbl">مجموعة</div>
+              </div>
+              <div class="hero-stat">
+                <div class="val" id="heroTotalStudents">—</div>
+                <div class="lbl">طالب مسجّل</div>
+              </div>
+              <div class="hero-stat">
+                <div class="val" id="heroAvgFill">—</div>
+                <div class="lbl">متوسط الامتلاء</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Filter + Add -->
+          <div class="filter-strip">
+            <select id="yearFilter">
+              <option value="">📅 جميع السنوات</option>
+              <option value="1">السنة الأولى</option>
+              <option value="2">السنة الثانية</option>
+              <option value="3">السنة الثالثة</option>
+              <option value="4">السنة الرابعة</option>
+            </select>
+            <select id="deptFilter">
+              <option value="">🏢 جميع الأقسام</option>
+            </select>
+            <div class="spacer"></div>
+            <button class="btn btn-primary" id="addGroupBtn">
+              <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              مجموعة جديدة
+            </button>
+          </div>
+
+          <!-- Groups Grid -->
+          <div class="groups-grid" id="groupsGrid">
+            <!-- Filled by JS -->
+          </div>
+        </main>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════
+         GROUP CREATE / EDIT MODAL
+    ═══════════════════════════════════════════════ -->
+    <div id="groupModal" class="modal-overlay" style="display:none;">
+      <div class="modal" style="max-width:520px;">
+        <div class="modal-header">
+          <h3 id="modalTitle">إضافة مجموعة جديدة</h3>
+          <button class="modal-close" id="closeGroupModal">
+            <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </button>
+        </div>
+        <div class="modal-body">
+          <input type="hidden" id="groupId" />
+          <div class="modal-2col">
+            <div class="field-group">
+              <label>اسم المجموعة *</label>
+              <input type="text" id="groupName" placeholder="مثال: المجموعة أ" />
+            </div>
+            <div class="field-group">
+              <label>كود المجموعة *</label>
+              <input type="text" id="groupCode" placeholder="مثال: Y2-CS-A" oninput="this.dataset.manual='1'" />
+            </div>
+          </div>
+          <div class="modal-2col">
+            <div class="field-group">
+              <label>السنة الدراسية *</label>
+              <select id="groupYear">
+                <option value="1">السنة الأولى</option>
+                <option value="2">السنة الثانية</option>
+                <option value="3">السنة الثالثة</option>
+                <option value="4">السنة الرابعة</option>
+              </select>
+            </div>
+            <div class="field-group">
+              <label>الحد الأقصى للطلاب</label>
+              <input type="number" id="groupCapacity" value="30" min="1" max="500" placeholder="0 = بدون حد" />
+            </div>
+          </div>
+          <div class="field-group">
+            <label>القسم (اختياري — اتركه فارغاً للمجموعات المشتركة)</label>
+            <select id="groupDept">
+              <option value="">عام / مشترك</option>
+            </select>
+          </div>
+          <div class="field-group" style="display:flex;align-items:center;gap:12px;background:#f8fafc;padding:12px;border-radius:10px;border:1px solid #e2e8f0;">
+            <input type="checkbox" id="groupActive" checked style="width:18px;height:18px;cursor:pointer;" />
+            <label for="groupActive" style="cursor:pointer;font-weight:600;margin-bottom:0;">مجموعة نشطة (يمكن تسجيل طلاب فيها)</label>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" id="cancelGroup">إلغاء</button>
+          <button class="btn btn-primary" id="saveGroup">
+            <svg viewBox="0 0 24 24"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+            حفظ المجموعة
+          </button>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- ═══════════════════════════════════════════════
+         MEMBERS MODAL (View + Assign Students)
+    ═══════════════════════════════════════════════ -->
+    <div id="membersModal" class="modal-overlay" style="display:none;">
+      <div class="modal" style="max-width:760px;">
+        <div class="modal-header">
+          <div>
+            <h3 id="membersModalTitle">إدارة طلاب المجموعة</h3>
+            <p id="membersModalSub" style="font-size:1.2rem;color:#64748b;margin-top:3px;"></p>
+          </div>
+          <button class="modal-close" onclick="closeMembersModal()">
+            <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </button>
+        </div>
+        <div class="modal-body" style="padding-bottom:0;">
+          <!-- Tabs -->
+          <div class="modal-tabs">
+            <button class="modal-tab active" id="tabMembers" onclick="switchTab('members')">
+              الطلاب الحاليون
+            </button>
+            <button class="modal-tab" id="tabAssign" onclick="switchTab('assign')">
+              إضافة / تعيين طلاب
+            </button>
+          </div>
+
+          <!-- Tab: Current Members -->
+          <div class="tab-section active" id="sectionMembers">
+            <div id="membersTableWrap" style="max-height:360px;overflow-y:auto;">
+              <table class="admin-table members-table" style="width:100%;">
+                <thead>
+                  <tr>
+                    <th>الطالب</th>
+                    <th>الرقم الوطني</th>
+                    <th>البريد</th>
+                    <th>إجراء</th>
+                  </tr>
+                </thead>
+                <tbody id="membersTableBody"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Tab: Assign Students -->
+          <div class="tab-section" id="sectionAssign">
+            <div style="background:#f8fafc;border-radius:12px;padding:16px;margin-bottom:16px;border:1px solid #e2e8f0;">
+              <p style="font-size:1.25rem;color:#475569;font-weight:600;margin-bottom:10px;">ابحث عن طالب لإضافته للمجموعة</p>
+              <div class="search-student-input">
+                <input type="text" id="studentSearchInput" placeholder="الاسم أو الرقم الوطني أو البريد..." />
+                <button class="btn btn-primary" id="searchStudentBtn">
+                  <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+                  بحث
+                </button>
+              </div>
+              <p style="font-size:1.15rem;color:#94a3b8;">* سيتم عرض الطلاب من نفس السنة الدراسية للمجموعة فقط</p>
+            </div>
+            <div id="searchResultsBox" style="background:#fff;border:1px solid #e2e8f0;border-radius:12px;display:none;max-height:280px;overflow-y:auto;">
+              <!-- JS filled -->
+            </div>
+            <div id="searchPlaceholder" style="text-align:center;padding:30px;color:#94a3b8;font-size:1.3rem;">
+              <svg viewBox="0 0 24 24" style="width:48px;height:48px;stroke:#cbd5e1;fill:none;margin-bottom:10px;display:block;margin:0 auto 10px;"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+              ابحث عن طالب لإضافته
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <span id="membersCap" style="font-size:1.2rem;color:#64748b;flex:1;text-align:right;"></span>
+          <button class="btn btn-secondary" onclick="closeMembersModal()">إغلاق</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Toast -->
+    <div id="toast" class="toast"></div>
+
+    <script src="../../config.js"></script>
+    <script src="../shared/portal-utils.js"></script>
+    <script src="groups.js"></script>
+  </body>
+</html>

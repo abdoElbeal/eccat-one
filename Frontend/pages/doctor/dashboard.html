@@ -1,0 +1,221 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>لوحة القيادة | بوابة الدكتور</title>
+    <meta name="description" content="نظرة عامة على محاضراتك اليوم وإحصاءات طلابك" />
+    <link rel="stylesheet" href="doctor.css" />
+    <link rel="stylesheet" href="dashboard.css" />
+  </head>
+  <body>
+    <div class="portal-layout">
+      <!-- Sidebar -->
+      <aside class="sidebar">
+        <a href="dashboard.html" class="sidebar-brand">
+          <div class="sidebar-brand-icon"><svg viewBox="0 0 24 24"><path d="M12 3 2 8l10 5 10-5-10-5ZM2 15l10 5 10-5M2 10l10 5 10-5"/></svg></div>
+          <div class="sidebar-brand-text"><strong>بوابة الدكتور</strong><span>جامعة التميز</span></div>
+        </a>
+        <nav class="sidebar-nav">
+          <a href="dashboard.html" class="nav-item active">
+            <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>لوحة القيادة
+          </a>
+          <a href="courses.html" class="nav-item">
+            <svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>موادي
+          </a>
+          <a href="students.html" class="nav-item">
+            <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>طلابي
+          </a>
+          <a href="grades.html" class="nav-item">
+            <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>الدرجات
+          </a>
+          <a href="schedule.html" class="nav-item">
+            <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>الجدول
+          </a>
+          <a href="announcements.html" class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 17H2a3 3 0 0 0 3-3V9a7 7 0 0 1 14 0v5a3 3 0 0 0 3 3zm-8.27 4a2 2 0 0 1-3.46 0"/></svg>الإعلانات</a>
+          <a href="messages.html" class="nav-item">
+            <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>الرسائل
+          </a>
+        </nav>
+        <div class="sidebar-footer">
+          <button class="support-btn">الدعم الفني</button>
+          <a href="../shared/profile.html" class="nav-item">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>
+            الإعدادات
+          </a>
+          <button class="nav-item logout" id="logoutBtn">
+            <svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/></svg>تسجيل الخروج
+          </button>
+        </div>
+      </aside>
+
+      <div class="portal-main">
+        <!-- Topbar -->
+        <header class="topbar">
+          <div class="topbar-avatar" id="topbarAvatar">
+            <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          </div>
+          <div class="topbar-user-info">
+            <strong id="topbarName">د. أحمد السعدي</strong>
+            <span id="topbarSub">قسم علوم الحاسب</span>
+          </div>
+          <button class="topbar-icon-btn">
+            <svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 0 1-3.46 0" fill="none" stroke="#475569" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span class="notif-dot"></span>
+          </button>
+          <div class="topbar-search">
+            <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+            <input type="text" placeholder="بحث عن طالب أو مادة..." />
+          </div>
+          <a href="dashboard.html" class="topbar-logo">Academic Curator</a>
+        </header>
+
+        <main class="page-body">
+          <!-- Welcome banner -->
+          <div class="welcome-banner">
+            <div class="wb-bg"></div>
+            <div class="wb-content">
+              <p class="wb-greeting">مرحباً بك مجدداً، أستاذنا الفاضل 👋</p>
+              <h1 class="wb-name" id="welcomeName">د. أحمد السعدي</h1>
+              <p class="wb-sub">لديك اليوم <strong id="todayLectures">3</strong> محاضرات و<strong id="pendingGrades">28</strong> درجة في انتظار الرصد. نتمنى لك يوماً أكاديمياً موفقاً.</p>
+              <div class="wb-actions">
+                <a href="grades.html" class="btn btn-primary">رصد الدرجات</a>
+                <a href="schedule.html" class="btn btn-wb-sec">عرض الجدول</a>
+              </div>
+            </div>
+            <div class="wb-stats">
+              <div class="wb-stat"><span class="wbs-value" id="wbStudents">156</span><span class="wbs-label">إجمالي الطلاب</span></div>
+              <div class="wb-stat-div"></div>
+              <div class="wb-stat"><span class="wbs-value" id="wbCourses">4</span><span class="wbs-label">المواد الدراسية</span></div>
+              <div class="wb-stat-div"></div>
+              <div class="wb-stat"><span class="wbs-value" id="wbAvgGrade">78%</span><span class="wbs-label">متوسط درجات الطلاب</span></div>
+            </div>
+          </div>
+
+          <!-- Stat cards -->
+          <div class="stat-grid" style="grid-template-columns:repeat(4,1fr);">
+            <div class="stat-card">
+              <div class="stat-card-icon" style="background:#eff6ff;">
+                <svg viewBox="0 0 24 24" style="fill:#2463eb;"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+              </div>
+              <div class="stat-card-value blue" id="statStudents">156</div>
+              <div class="stat-card-label">إجمالي الطلاب</div>
+              <div class="stat-card-badge">↑ +12 هذا الفصل</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-card-icon" style="background:#f5f3ff;">
+                <svg viewBox="0 0 24 24" style="fill:#7c3aed;"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+              </div>
+              <div class="stat-card-value purple" id="statCourses">4</div>
+              <div class="stat-card-label">مواد دراسية مُدرَّسة</div>
+              <div class="stat-card-sub">الفصل الأول 2024</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-card-icon" style="background:#f0fdf4;">
+                <svg viewBox="0 0 24 24" style="fill:#16a34a;"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
+              </div>
+              <div class="stat-card-value green" id="statAvg">78%</div>
+              <div class="stat-card-label">متوسط درجات الطلاب</div>
+              <div class="progress-bar" style="margin-top:8px;"><div class="progress-fill green" style="width:78%;"></div></div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-card-icon" style="background:#fff7ed;">
+                <svg viewBox="0 0 24 24" style="fill:#ea580c;"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              </div>
+              <div class="stat-card-value orange" id="statPending">28</div>
+              <div class="stat-card-label">درجات لم تُرصد بعد</div>
+              <a href="grades.html" class="badge badge-orange" style="margin-top:6px;font-size:1.1rem;">رصد الآن ←</a>
+            </div>
+          </div>
+
+          <!-- Middle grid -->
+          <div class="dash-mid">
+            <!-- Today's schedule -->
+            <div class="panel">
+              <div class="panel-header">
+                <h2>محاضرات اليوم</h2>
+                <a href="schedule.html" class="text-primary" style="font-size:1.25rem;">الجدول الكامل</a>
+              </div>
+              <div class="today-list" id="todayList">
+                <div class="today-item">
+                  <div class="ti-time"><span class="ti-hour">08:00</span><span class="ti-period">ص</span></div>
+                  <div class="ti-info">
+                    <div class="ti-name">خوارزميات متقدمة — CS402</div>
+                    <div class="ti-meta">
+                      <span>🏛️ قاعة 402 - مبنى ج</span>
+                      <span>👥 <strong id="sect1Students">38</strong> طالب</span>
+                    </div>
+                  </div>
+                  <span class="badge badge-green">جارٍ الآن</span>
+                </div>
+                <div class="today-item">
+                  <div class="ti-time"><span class="ti-hour">10:00</span><span class="ti-period">ص</span></div>
+                  <div class="ti-info">
+                    <div class="ti-name">الذكاء الاصطناعي — CS315</div>
+                    <div class="ti-meta">
+                      <span>🏛️ مختبر الذكاء الاصطناعي</span>
+                      <span>👥 <strong>42</strong> طالب</span>
+                    </div>
+                  </div>
+                  <span class="badge badge-blue">قادم</span>
+                </div>
+                <div class="today-item">
+                  <div class="ti-time"><span class="ti-hour">01:00</span><span class="ti-period">م</span></div>
+                  <div class="ti-info">
+                    <div class="ti-name">هياكل البيانات — CS302</div>
+                    <div class="ti-meta">
+                      <span>🏛️ قاعة 201</span>
+                      <span>👥 <strong>36</strong> طالب</span>
+                    </div>
+                  </div>
+                  <span class="badge badge-gray">لاحقاً</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Right column -->
+            <div class="dash-right-col">
+              <!-- Top students -->
+              <div class="panel">
+                <div class="panel-header">
+                  <h2>أفضل الطلاب 🏅</h2>
+                  <a href="students.html" class="text-primary" style="font-size:1.25rem;">مشاهدة الكل</a>
+                </div>
+                <div class="top-students" id="topStudents">
+                  <div class="ts-item"><div class="ts-rank gold">1</div><div class="avatar" style="background:#fef3c7;color:#d97706;">سع</div><div class="ts-info"><strong>سارة علي</strong><span>GPA 3.99</span></div><span class="badge badge-orange">+A</span></div>
+                  <div class="ts-item"><div class="ts-rank silver">2</div><div class="avatar" style="background:#f1f5f9;color:#475569;">أم</div><div class="ts-info"><strong>أحمد محمد</strong><span>GPA 3.94</span></div><span class="badge badge-blue">+A</span></div>
+                  <div class="ts-item"><div class="ts-rank bronze">3</div><div class="avatar" style="background:#e0e7ff;color:#4f46e5;">يإ</div><div class="ts-info"><strong>ياسين إبراهيم</strong><span>GPA 3.88</span></div><span class="badge badge-purple">A</span></div>
+                </div>
+              </div>
+
+              <!-- Quick actions -->
+              <div class="panel panel-body mt-16">
+                <h2 style="font-size:1.4rem;font-weight:700;margin-bottom:14px;">إجراءات سريعة</h2>
+                <div class="quick-actions">
+                  <a href="grades.html" class="qa-btn blue"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>رصد درجة</a>
+                  <a href="students.html" class="qa-btn purple"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>عرض الطلاب</a>
+                  <a href="messages.html" class="qa-btn green"><svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>إرسال رسالة</a>
+                  <a href="courses.html" class="qa-btn orange"><svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>إدارة المواد</a>
+                </div>
+              </div>
+
+              <!-- Attendance alert -->
+              <div class="alert-card">
+                <div class="alert-icon">⚠️</div>
+                <div>
+                  <div class="alert-title">تنبيه غياب</div>
+                  <div class="alert-text"><strong>7 طلاب</strong> تجاوزوا حد الغياب المسموح في مادة CS302</div>
+                </div>
+                <a href="students.html" class="btn btn-sm btn-danger">مشاهدة</a>
+              </div>
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+
+    <script src="../../config.js"></script>
+    <script src="../shared/portal-utils.js"></script>
+    <script src="dashboard.js"></script>
+  </body>
+</html>

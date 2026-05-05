@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>أكواد التسجيل | إدارة الكلية</title>
+    <meta name="description" content="توليد وإدارة أكواد الوصول الآمنة للطلاب وأعضاء هيئة التدريس" />
+    <link rel="stylesheet" href="admin.css" />
+    <link rel="stylesheet" href="reg-codes.css" />
+  </head>
+  <body>
+    <div class="admin-layout">
+      <!-- Sidebar -->
+        <aside class="sidebar">
+    <a href="dashboard.html" class="sidebar-brand">
+      <div class="sidebar-brand-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M12 3 2 8l10 5 10-5-10-5ZM2 15l10 5 10-5M2 10l10 5 10-5"/></svg></div>
+      <div class="sidebar-brand-text"><strong>EccatOne</strong><span>الإدارة</span></div>
+    </a>
+    <nav class="sidebar-nav">
+
+      <a href="dashboard.html"    class="nav-item"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>لوحة التحكم</a>
+      <a href="users.html"        class="nav-item"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>المستخدمين</a>
+      <a href="departments.html"  class="nav-item"><svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>الأقسام</a>
+      <a href="courses.html"      class="nav-item"><svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>المواد الدراسية</a>
+      <a href="support.html"      class="nav-item"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>رسائل الدعم</a>
+      <a href="groups.html"       class="nav-item"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>المجموعات</a>
+      <a href="schedules.html"    class="nav-item"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>الجداول</a>
+      <a href="grades.html"       class="nav-item"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>الدرجات</a>
+      <a href="reg-codes.html"    class="nav-item active"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>أكواد التسجيل</a>
+      <a href="announcements.html" class="nav-item"><svg viewBox="0 0 24 24"><path d="M22 17H2a3 3 0 0 0 3-3V9a7 7 0 0 1 14 0v5a3 3 0 0 0 3 3zm-8.27 4a2 2 0 0 1-3.46 0"/></svg>الإعلانات</a>
+    </nav>
+    <div class="sidebar-footer">
+      <button class="nav-item logout" id="logoutBtn"><svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/></svg>تسجيل الخروج</button>
+    </div>
+  </aside>
+
+      <!-- Main -->
+      <div class="admin-main">
+        <header class="topbar">
+          <div class="topbar-avatar" id="topbarAvatar">
+            <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          </div>
+          <button class="topbar-bell" aria-label="إشعارات">
+            <svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+            <span class="notif-dot"></span>
+          </button>
+          <div class="topbar-search">
+            <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input type="text" id="topSearch" placeholder="بحث سريع عن كود..." />
+          </div>
+          <span class="topbar-title">نظام إدارة الكلية</span>
+        </header>
+
+        <main class="page-body">
+          <div class="page-header">
+            <h1>إدارة رموز التسجيل</h1>
+            <p>قم بتوليد وإدارة أكواد الوصول الآمنة للطلاب وأعضاء هيئة التدريس.</p>
+          </div>
+
+          <!-- CSV & Maintenance buttons -->
+          <div class="mb-16 flex-gap">
+            <button class="btn btn-secondary" id="csvExportBtn">
+              <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+              توليد جماعي عبر CSV
+            </button>
+            <button class="btn btn-secondary" style="color:#ef4444; border-color:#fee2e2;" id="clearUsedBtn">
+              <svg viewBox="0 0 24 24"><path d="M3 6h18m-2 0v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+              تفريغ الأكواد المُستخدمة
+            </button>
+          </div>
+
+          <!-- Stats -->
+          <div class="stat-grid" style="grid-template-columns:repeat(4,1fr);">
+            <div class="stat-card">
+              <div class="stat-card-label">إجمالي الأكواد</div>
+              <div class="stat-card-value" id="totalCodes">1,284</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-card-label">غير مُستخدم</div>
+              <div class="stat-card-value primary" id="unusedCodes">412</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-card-label">مستخدم</div>
+              <div class="stat-card-value green" id="usedCodes">56</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-card-label">نسبة الاستخدام</div>
+              <div class="stat-card-value" style="color:#f59e0b;" id="usageRate">68%</div>
+            </div>
+          </div>
+
+          <!-- Content grid -->
+          <div class="content-grid" style="margin-top:20px;">
+            <!-- Table -->
+            <div class="panel">
+              <div class="table-wrap">
+                <table class="admin-table">
+                  <thead><tr>
+                    <th>الكود</th>
+                    <th>الاسم</th>
+                    <th>القسم</th>
+                    <th>الدور</th>
+                    <th>الحالة</th>
+                    <th>الإجراءات</th>
+                  </tr></thead>
+                  <tbody id="codesTable">
+                    <!-- filled by JS -->
+                  </tbody>
+                </table>
+              </div>
+              <div class="pagination">
+                <span id="codesPagInfo">عرض 1-10 من أصل 1,284 كود</span>
+                <div class="page-btns">
+                  <button class="page-btn" id="codePrev">
+                    <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+                  </button>
+                  <button class="page-btn active" data-page="1">1</button>
+                  <button class="page-btn" data-page="2">2</button>
+                  <button class="page-btn" data-page="3">3</button>
+                  <button class="page-btn" id="codeNext">
+                    <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Generate form -->
+            <div class="form-panel">
+              <h3>
+                <div class="icon-btn">
+                  <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                </div>
+                توليد كود جديد
+              </h3>
+              <form id="genCodeForm">
+
+                <!-- Name row -->
+                <div class="field-row-2">
+                  <div class="field-group">
+                    <label>الاسم الأول</label>
+                    <input type="text" id="firstName" placeholder="مثال: أحمد" required />
+                  </div>
+                  <div class="field-group">
+                    <label>اسم العائلة</label>
+                    <input type="text" id="lastName" placeholder="مثال: الشمري" required />
+                  </div>
+                </div>
+
+                <div class="field-group">
+                  <label>الرقم الوطني</label>
+                  <input type="text" id="natId" placeholder="أدخل الرقم الوطني" required />
+                </div>
+
+                <!-- Age & highSchool row -->
+                <div class="field-row-2">
+                  <div class="field-group">
+                    <label>العمر</label>
+                    <input type="number" id="ageInput" placeholder="مثال: 19" min="15" max="60" required />
+                  </div>
+                  <div class="field-group">
+                    <label>المدرسة الثانوية</label>
+                    <input type="text" id="highSchool" placeholder="اسم المدرسة" required />
+                  </div>
+                </div>
+
+                <div class="field-group">
+                  <label>العنوان</label>
+                  <input type="text" id="addressInput" placeholder="المدينة، الحي" required />
+                </div>
+
+                <div class="field-group">
+                  <label>القسم</label>
+                  <select id="codesDept" required>
+                    <option value="">جارس التحميل...</option>
+                  </select>
+                </div>
+
+                <div class="field-row-2">
+                  <div class="field-group">
+                    <label>الدور</label>
+                    <div class="role-tabs">
+                      <button type="button" class="role-tab active" data-role="student" id="roleStudent">طالب</button>
+                      <button type="button" class="role-tab" data-role="doctor" id="roleDoctor">دكتور</button>
+                      <button type="button" class="role-tab" data-role="ta" id="roleTA">معيد</button>
+                    </div>
+                    <input type="hidden" id="selectedRole" value="student" />
+                  </div>
+                  <div class="field-group" id="yearGroup">
+                    <label>السنة الدراسية</label>
+                    <select id="yearLevel">
+                      <option value="1">1</option>
+                      <option value="2">2</option>
+                      <option value="3">3</option>
+                      <option value="4">4</option>
+                    </select>
+                  </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary w-full" id="genBtn">
+                  <svg viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                  توليد كود جديد
+                </button>
+              </form>
+            </div>
+          </div>
+
+          <!-- Bottom promo -->
+          <div class="promo-row" style="margin-top:24px;">
+            <div class="promo-card">
+              <div class="promo-bg"></div>
+              <div class="promo-content">
+                <div class="promo-title">تأمين الأكواد</div>
+                <div class="promo-desc">تشفير متقدم لكل كود تم توليده لضمان عدم انتحال هويات الطلاب الجدد.</div>
+              </div>
+            </div>
+            <div class="promo-card">
+              <div class="promo-bg purple"></div>
+              <div class="promo-content">
+                <div class="promo-title">إحصائيات التفعيل</div>
+                <div class="promo-desc">تابع عمليات التسجيل في الوقت الفعلي وحلل كفاءة النظام خلال الفصل الدراسي.</div>
+              </div>
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+
+    <script src="../../config.js"></script>
+    <script src="../shared/portal-utils.js"></script>
+    <script src="reg-codes.js"></script>
+  </body>
+</html>

@@ -1,0 +1,276 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>لوحة المتصدرين | بوابة الطالب</title>
+    <meta name="description" content="تنافس مع زملائك وارتقِ إلى قمة التفوق الأكاديمي" />
+    <link rel="stylesheet" href="user.css" />
+    <link rel="stylesheet" href="leaderboard.css" />
+  </head>
+  <body>
+    <div class="portal-layout">
+      <!-- Sidebar -->
+      <aside class="sidebar">
+        <a href="dashboard.html" class="sidebar-brand">
+          <div class="sidebar-brand-icon"><svg viewBox="0 0 24 24"><path d="M12 3 2 8l10 5 10-5-10-5ZM2 15l10 5 10-5M2 10l10 5 10-5"/></svg></div>
+          <div class="sidebar-brand-text"><strong>بوابة الطالب</strong><span>جامعة التميز</span></div>
+        </a>
+        <nav class="sidebar-nav">
+
+          <a href="dashboard.html" class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>لوحة القيادة</a>
+          <a href="courses.html" class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>كورساتي</a>
+          <a href="schedule.html" class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>الجدول الزمني</a>
+          <a href="grades.html" class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>الدرجات</a>
+          <a href="announcements.html" class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 17H2a3 3 0 0 0 3-3V9a7 7 0 0 1 14 0v5a3 3 0 0 0 3 3zm-8.27 4a2 2 0 0 1-3.46 0"/></svg>الإعلانات</a>
+          <a href="leaderboard.html" class="nav-item active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>لوحة المتصدرين</a>
+          <a href="messages.html" class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>الرسائل</a>
+          <a href="support.html" class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>الدعم الفني</a>
+        </nav>
+        <div class="sidebar-footer">
+
+          <button class="support-btn" id="supportBtn">الدعم الفني</button>
+          <a href="../shared/profile.html" class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>الإعدادات</a>
+          <button class="nav-item logout" id="logoutBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/></svg>تسجيل الخروج</button>
+        </div>
+      </aside>
+
+      <!-- Main -->
+      <div class="portal-main">
+        <header class="topbar">
+          <div class="topbar-avatar" id="topbarAvatar"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+          <button class="topbar-icon-btn"><svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 0 1-3.46 0"/></svg><span class="notif-dot"></span></button>
+          <div class="topbar-search">
+            <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+            <input type="text" id="searchInput" placeholder="ابحث عن زميل..." />
+          </div>
+          <a href="dashboard.html" class="topbar-logo">Academic Curator</a>
+        </header>
+
+        <main class="page-body">
+
+          <!-- ═══ MY RANK HERO CARD ═══ -->
+          <div class="my-rank-hero" id="myRankHero">
+            <div class="mrh-bg-particles">
+              <span></span><span></span><span></span><span></span><span></span>
+            </div>
+            <div class="mrh-left">
+              <div class="mrh-badge">🏅 مرتبتك الحالية</div>
+              <div class="mrh-rank" id="myRankNum">#5</div>
+              <div class="mrh-name" id="myRankName">أحمد محمد</div>
+              <div class="mrh-dept text-muted" id="myRankDept">هندسة البرمجيات • طالب سنة ثالثة</div>
+              <div class="mrh-gpa-row">
+                <span class="mrh-gpa" id="myRankGpa">GPA 3.79</span>
+                <span class="mrh-trend up" id="myRankTrend">↑ +0.12 هذا الفصل</span>
+              </div>
+            </div>
+            <div class="mrh-right">
+              <div class="mrh-next-label" id="myRankNextLabel">للوصول إلى المرتبة #4</div>
+              <div class="mrh-progress-wrap">
+                <div class="mrh-progress-bar">
+                  <div class="mrh-progress-fill" id="myRankBar" style="width:72%;"></div>
+                </div>
+                <span class="mrh-pct">72%</span>
+              </div>
+              <div class="mrh-gap-label" id="myRankGap">تحتاج <strong>+ 0.03</strong> نقطة GPA للتقدم خطوة</div>
+              <div class="mrh-streak">
+                <span class="streak-icon">🔥</span>
+                <span id="myStreakLabel">سلسلة <strong>12 يوم</strong> دراسي متواصل</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- ═══ TABS + SCOPE ═══ -->
+          <div class="lb-controls">
+            <div class="scope-tabs">
+              <button class="scope-tab active" id="tabDept" data-scope="dept">القسم</button>
+              <button class="scope-tab" id="tabAll" data-scope="all">الجامعة</button>
+              <button class="scope-tab" id="tabSubject" data-scope="subject">المادة</button>
+            </div>
+            
+            <div class="flex-gap" style="align-items:center;">
+              <select id="subjectSelect" style="display:none; padding: 8px 16px; border-radius: 10px; border: 1.5px solid #e2e8f0; outline: none; background: #fff; font-family: inherit; font-size: 1.3rem; margin-left: 12px; color: #334155; transition: 0.2s;">
+                <option value="">اختر المادة...</option>
+              </select>
+              
+              <select id="semesterSelect" style="padding: 8px 16px; border-radius: 10px; border: 1.5px solid #e2e8f0; outline: none; background: #fff; font-family: inherit; font-size: 1.25rem; color: #475569; transition: 0.2s;">
+                <option value="">التراكمي (الكل)</option>
+                <option value="الخريف">فصل الخريف</option>
+                <option value="الربيع">فصل الربيع</option>
+                <option value="الصيف">فصل الصيف</option>
+              </select>
+
+              <button class="btn btn-ghost btn-sm" id="shareBtn">
+                <svg viewBox="0 0 24 24" style="width:14px;height:14px;fill:#475569;"><path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8M16 6l-4-4-4 4M12 2v13"/></svg>
+                مشاركة ترتيبي
+              </button>
+            </div>
+          </div>
+
+          <!-- ═══ PODIUM ═══ -->
+          <div class="podium-arena">
+            <!-- Confetti dots -->
+            <div class="confetti-row">
+              <span style="background:#fbbf24;"></span><span style="background:#7c3aed;"></span>
+              <span style="background:#2463eb;"></span><span style="background:#ef4444;"></span>
+              <span style="background:#22c55e;"></span><span style="background:#f59e0b;"></span>
+            </div>
+
+            <div class="podium-stage" id="podium">
+              <!-- 3rd -->
+              <div class="podium-slot third" style="visibility:hidden;">
+                <div class="ps-avatar-wrap">
+                  <div class="ps-avatar bronze">--</div>
+                  <div class="ps-medal">🥉</div>
+                </div>
+                <div class="ps-rank">3</div>
+                <div class="ps-name">--</div>
+                <div class="ps-gpa">--</div>
+                <div class="ps-spec">--</div>
+                <div class="ps-bar bronze-bar"><div style="height:64px;background:#92400e;border-radius:6px 6px 0 0;opacity:.15;"></div></div>
+              </div>
+
+              <!-- 1st -->
+              <div class="podium-slot first" style="visibility:hidden;">
+                <div class="crown-float">👑</div>
+                <div class="ps-avatar-wrap">
+                  <div class="ps-avatar gold">--</div>
+                  <div class="ps-medal">🥇</div>
+                </div>
+                <div class="ps-rank gold-rank">1</div>
+                <div class="ps-name bold">--</div>
+                <div class="ps-gpa gold-gpa">--</div>
+                <div class="ps-spec">--</div>
+                <div class="ps-bar"><div style="height:96px;background:linear-gradient(180deg,#fbbf24,#f59e0b);border-radius:6px 6px 0 0;"></div></div>
+              </div>
+
+              <!-- 2nd -->
+              <div class="podium-slot second" style="visibility:hidden;">
+                <div class="ps-avatar-wrap">
+                  <div class="ps-avatar silver">--</div>
+                  <div class="ps-medal">🥈</div>
+                </div>
+                <div class="ps-rank">2</div>
+                <div class="ps-name">--</div>
+                <div class="ps-gpa">--</div>
+                <div class="ps-spec">--</div>
+                <div class="ps-bar"><div style="height:80px;background:linear-gradient(180deg,#94a3b8,#64748b);border-radius:6px 6px 0 0;opacity:.7;"></div></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ═══ ACHIEVEMENT BADGES ═══ -->
+          <div class="badges-row">
+            <div class="ach-badge earned" title="حضور مثالي">
+              <span class="ach-icon">📅</span>
+              <span class="ach-label">حضور مثالي</span>
+            </div>
+            <div class="ach-badge earned" title="سلسلة 10 أيام">
+              <span class="ach-icon">🔥</span>
+              <span class="ach-label">سلسلة 10 أيام</span>
+            </div>
+            <div class="ach-badge" title="قريباً - المرتبة الأولى">
+              <span class="ach-icon">🏆</span>
+              <span class="ach-label">المتصدر</span>
+              <span class="ach-lock">🔒</span>
+            </div>
+            <div class="ach-badge" title="قريباً - أكمل 5 مواد بـ A">
+              <span class="ach-icon">⭐</span>
+              <span class="ach-label">نجم الدوري</span>
+              <span class="ach-lock">🔒</span>
+            </div>
+            <div class="ach-badge earned" title="أفضل 5٪ هذا الفصل">
+              <span class="ach-icon">🎯</span>
+              <span class="ach-label">النخبة 5٪</span>
+            </div>
+            <div class="ach-badge" title="قريباً - أنهِ 100 ساعة">
+              <span class="ach-icon">💎</span>
+              <span class="ach-label">100 ساعة</span>
+              <span class="ach-lock">🔒</span>
+            </div>
+          </div>
+
+          <!-- ═══ LEADERBOARD TABLE ═══ -->
+          <div class="panel">
+            <div class="panel-header">
+              <h2>ترتيب الطلاب</h2>
+              <span class="text-muted" style="font-size:1.2rem;" id="lbCount">أفضل 50 طالب</span>
+            </div>
+            <div class="table-wrap">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th style="width:50px;">الترتيب</th>
+                    <th>الطالب</th>
+                    <th>المعدل</th>
+                    <th>الساعات</th>
+                    <th>التغيير</th>
+                    <th style="width:80px;">تواصل</th>
+                  </tr>
+                </thead>
+                <tbody id="leaderTable">
+                  <!-- Dynamic Content -->
+                </tbody>
+              </table>
+            </div>
+            <div class="pagination">
+              <button class="page-btn" id="lbPrev"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6" fill="none" stroke="#475569" stroke-width="2"/></svg></button>
+              <button class="page-btn active">1</button>
+              <button class="page-btn">2</button>
+              <button class="page-btn">…</button>
+              <button class="page-btn">12</button>
+              <button class="page-btn" id="lbNext"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6" fill="none" stroke="#475569" stroke-width="2"/></svg></button>
+            </div>
+          </div>
+
+          <!-- ═══ MOTIVATIONAL FOOTER ═══ -->
+          <div class="motivate-row">
+            <div class="motivate-card blue">
+              <div class="mc-icon">💡</div>
+              <div>
+                <div class="mc-title">نصيحة اليوم</div>
+                <div class="mc-text">حضور المحاضرات بانتظام يرفع معدلك بمتوسط 0.3 نقطة خلال الفصل الواحد.</div>
+              </div>
+            </div>
+            <div class="motivate-card purple">
+              <div class="mc-icon">🎯</div>
+              <div>
+                <div class="mc-title">هدفك القادم</div>
+                <div class="mc-text">أكمل واجبات مادة الخوارزميات هذا الأسبوع للحفاظ على تقديرك +A وتقدمك في الترتيب.</div>
+              </div>
+            </div>
+            <div class="motivate-card green">
+              <div class="mc-icon">🚀</div>
+              <div>
+                <div class="mc-title">تحدي الأسبوع</div>
+                <div class="mc-text">ارتقِ مرتبة واحدة هذا الأسبوع! أنت على بعد 0.03 GPA من المركز الرابع.</div>
+              </div>
+            </div>
+          </div>
+
+        </main>
+      </div>
+    </div>
+
+    <!-- Quick chat popup -->
+    <div class="chat-popup" id="chatPopup" style="display:none;">
+      <div class="cp-header">
+        <span id="cpName">سارة علي</span>
+        <button id="cpClose">✕</button>
+      </div>
+      <div class="cp-body">
+        <p class="cp-hint">أرسل رسالة تشجيع أو اطلب مشاركة ملاحظات 📚</p>
+      </div>
+      <div class="cp-footer">
+        <input type="text" id="cpInput" placeholder="اكتب رسالة..." />
+        <button id="cpSend" onclick="sendQuickMsg()">
+          <svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <script src="../../config.js"></script>
+    <script src="../shared/portal-utils.js"></script>
+    <script src="leaderboard.js"></script>
+  </body>
+</html>

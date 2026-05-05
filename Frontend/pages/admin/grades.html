@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>إدارة الدرجات | لوحة الإدارة</title>
+    <link rel="stylesheet" href="admin.css" />
+    <style>
+      .grade-input { width: 70px; padding: 6px 10px; border: 1.5px solid #e2e8f0; border-radius: 8px; text-align: center; font-size: 1.3rem; font-family: inherit; transition: all .15s; }
+      .grade-input:focus { border-color: #2463eb; box-shadow: 0 0 0 3px rgba(37,99,235,.1); outline: none; }
+      .grade-input.changed { border-color: #f59e0b; background: #fffbeb; }
+      .total-display { font-weight: 700; font-size: 1.4rem; color: #1e293b; }
+      .total-display.unset { color: #94a3b8; font-weight: 400; }
+      .grade-letter { display: inline-block; padding: 2px 10px; border-radius: 8px; font-weight: 700; font-size: 1.2rem; min-width: 36px; text-align: center; }
+      .grade-letter.unset { background: #f1f5f9; color: #94a3b8; font-weight: 400; }
+      .grade-save-btn { background: #f1f5f9; border: none; width: 34px; height: 34px; border-radius: 8px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all .2s; color: #64748b; }
+      .grade-save-btn:hover { background: #e2e8f0; color: #1e293b; }
+      .grade-save-btn.saved { background: #dcfce7; color: #16a34a; }
+      .grade-save-btn svg { width: 18px; height: 18px; fill: currentColor; }
+      .filters-panel { background: #fff; border-radius: 16px; border: 1.5px solid #e2e8f0; padding: 20px; margin-bottom: 24px; display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+      .filter-group { display: flex; flex-direction: column; gap: 6px; }
+      .filter-group label { font-size: 1.2rem; font-weight: 600; color: #64748b; }
+      .filter-group select { padding: 10px 14px; border: 1.5px solid #e2e8f0; border-radius: 10px; font-size: 1.3rem; outline: none; min-width: 200px; }
+    </style>
+  </head>
+  <body>
+    <div class="admin-layout">
+      <!-- Sidebar -->
+        <aside class="sidebar">
+    <a href="dashboard.html" class="sidebar-brand">
+      <div class="sidebar-brand-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M12 3 2 8l10 5 10-5-10-5ZM2 15l10 5 10-5M2 10l10 5 10-5"/></svg></div>
+      <div class="sidebar-brand-text"><strong>EccatOne</strong><span>الإدارة</span></div>
+    </a>
+    <nav class="sidebar-nav">
+
+      <a href="dashboard.html"    class="nav-item"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>لوحة التحكم</a>
+      <a href="users.html"        class="nav-item"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>المستخدمين</a>
+      <a href="departments.html"  class="nav-item"><svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>الأقسام</a>
+      <a href="courses.html"      class="nav-item"><svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>المواد الدراسية</a>
+      <a href="support.html"      class="nav-item"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>رسائل الدعم</a>
+      <a href="groups.html"       class="nav-item"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>المجموعات</a>
+      <a href="schedules.html"    class="nav-item"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>الجداول</a>
+      <a href="grades.html"    class="nav-item active"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>الدرجات</a>
+      <a href="reg-codes.html"    class="nav-item"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>أكواد التسجيل</a>
+      <a href="announcements.html" class="nav-item"><svg viewBox="0 0 24 24"><path d="M22 17H2a3 3 0 0 0 3-3V9a7 7 0 0 1 14 0v5a3 3 0 0 0 3 3zm-8.27 4a2 2 0 0 1-3.46 0"/></svg>الإعلانات</a>
+    </nav>
+    <div class="sidebar-footer">
+      <button class="nav-item logout" id="logoutBtn"><svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/></svg>تسجيل الخروج</button>
+    </div>
+  </aside>
+
+      <!-- Main -->
+      <div class="admin-main">
+        <header class="topbar">
+          <div class="topbar-left">
+            <h1 class="topbar-title">إدارة الدرجات</h1>
+            <span class="topbar-sub">رصد وتعديل درجات الطلاب</span>
+          </div>
+          <div class="topbar-actions">
+            <div class="topbar-avatar" id="topbarAvatar"></div>
+          </div>
+        </header>
+
+        <div class="page-body">
+          <!-- Filters -->
+          <div class="filters-panel">
+            <div class="filter-group">
+              <label>القسم</label>
+              <select id="deptSelect"><option value="">اختر القسم...</option></select>
+            </div>
+            <div class="filter-group">
+              <label>المادة</label>
+              <select id="subjectSelect" disabled><option value="">اختر المادة...</option></select>
+            </div>
+            <div class="filter-group">
+              <label>المجموعة</label>
+              <select id="groupSelect" disabled><option value="all">كل المجموعات</option></select>
+            </div>
+            <button class="btn btn-primary" style="margin-top:20px;padding:10px 24px;" id="loadGradesBtn">عرض الطلاب</button>
+            <div style="margin-right:auto;display:flex;gap:10px;margin-top:20px;">
+              <button class="btn btn-green" id="saveAllBtn" disabled>حفظ الكل</button>
+              <button class="btn btn-ghost" id="exportBtn" disabled>تصدير CSV</button>
+            </div>
+          </div>
+
+          <!-- Table -->
+          <div class="panel">
+            <div class="table-wrap">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>الطالب</th>
+                    <th>أعمال السنة (20)</th>
+                    <th>منتصف الفصل (30)</th>
+                    <th>الامتحان النهائي (50)</th>
+                    <th>المجموع (100)</th>
+                    <th>التقدير</th>
+                    <th>إجراء</th>
+                  </tr>
+                </thead>
+                <tbody id="gradesTable">
+                  <tr><td colspan="8" style="text-align:center;padding:40px;color:#94a3b8;">يرجى اختيار القسم والمادة أولاً</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="../../config.js"></script>
+    <script src="../shared/portal-utils.js"></script>
+    <script src="grades.js"></script>
+  </body>
+</html>

@@ -1,0 +1,366 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>إدارة المستخدمين | إدارة الكلية</title>
+    <meta name="description" content="إدارة حسابات الطلاب وأعضاء هيئة التدريس" />
+    <link rel="stylesheet" href="admin.css" />
+    <link rel="stylesheet" href="users.css" />
+  </head>
+  <body>
+    <div class="admin-layout">
+      <!-- Sidebar -->
+        <aside class="sidebar">
+    <a href="dashboard.html" class="sidebar-brand">
+      <div class="sidebar-brand-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M12 3 2 8l10 5 10-5-10-5ZM2 15l10 5 10-5M2 10l10 5 10-5"/></svg></div>
+      <div class="sidebar-brand-text"><strong>EccatOne</strong><span>الإدارة</span></div>
+    </a>
+    <nav class="sidebar-nav">
+
+      <a href="dashboard.html"    class="nav-item"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>لوحة التحكم</a>
+      <a href="users.html"    class="nav-item active"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>المستخدمين</a>
+      <a href="departments.html"  class="nav-item"><svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>الأقسام</a>
+      <a href="courses.html"      class="nav-item"><svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>المواد الدراسية</a>
+      <a href="support.html"      class="nav-item"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>رسائل الدعم</a>
+      <a href="groups.html"       class="nav-item"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>المجموعات</a>
+      <a href="schedules.html"    class="nav-item"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>الجداول</a>
+      <a href="grades.html"       class="nav-item"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>الدرجات</a>
+      <a href="reg-codes.html"    class="nav-item"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>أكواد التسجيل</a>
+      <a href="announcements.html" class="nav-item"><svg viewBox="0 0 24 24"><path d="M22 17H2a3 3 0 0 0 3-3V9a7 7 0 0 1 14 0v5a3 3 0 0 0 3 3zm-8.27 4a2 2 0 0 1-3.46 0"/></svg>الإعلانات</a>
+    </nav>
+    <div class="sidebar-footer">
+      <button class="nav-item logout" id="logoutBtn"><svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/></svg>تسجيل الخروج</button>
+    </div>
+  </aside>
+
+      <!-- Main -->
+      <div class="admin-main">
+        <header class="topbar">
+          <div class="topbar-avatar" id="topbarAvatar">
+            <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          </div>
+          <button class="topbar-bell" aria-label="إشعارات" id="notifBell">
+            <svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+            <span class="notif-dot"></span>
+          </button>
+          <div class="topbar-search">
+            <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input type="text" id="topSearch" placeholder="البحث عن مستخدم..." />
+          </div>
+          <span class="topbar-title">نظام إدارة الكلية</span>
+        </header>
+
+        <main class="page-body">
+          <div class="page-header">
+            <h1>إدارة المستخدمين</h1>
+            <p>تحكم في صلاحيات الطلاب، الدكاترة، والمعيدين</p>
+          </div>
+
+          <!-- Actions row -->
+          <div class="flex-between mb-16">
+            <div class="filter-bar">
+              <div class="role-toggle">
+                <button class="role-toggle-btn active" id="tabStudents" data-role="student">
+                  <svg viewBox="0 0 24 24"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+                  الطلاب
+                </button>
+                <button class="role-toggle-btn" id="tabDoctors" data-role="doctor">
+                  <svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M19 8v6M22 11h-6"/></svg>
+                  الدكاترة
+                </button>
+                <button class="role-toggle-btn" id="tabTAs" data-role="ta">
+                  <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                  المعيدين
+                </button>
+              </div>
+            </div>
+            <div class="flex-gap">
+              <button class="btn btn-secondary" id="exportBtn">
+                <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                تصدير البيانات
+              </button>
+              <button class="btn btn-primary" id="addUserBtn">
+                <svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>
+                إضافة مستخدم جديد
+              </button>
+            </div>
+          </div>
+
+          <!-- Filter bar -->
+          <div class="panel panel-body mb-16">
+            <div class="filter-bar">
+              <div class="search-box">
+                <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                <input type="text" id="searchInput" placeholder="البحث بالاسم، البريد، أو الرقم الوطني..." />
+              </div>
+              <select id="deptFilter">
+                <option value="">كل الأقسام</option>
+              </select>
+               <select id="statusFilter">
+                <option value="">الحالة</option>
+                <option value="active">نشط</option>
+                <option value="inactive">غير مفعّل</option>
+              </select>
+              <select id="yearFilter">
+                <option value="">كل السنوات</option>
+                <option value="1">السنة الأولى</option>
+                <option value="2">السنة الثانية</option>
+                <option value="3">السنة الثالثة</option>
+                <option value="4">السنة الرابعة</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Table -->
+          <div class="panel">
+            <div class="table-wrap">
+              <table class="admin-table">
+                <thead><tr>
+                  <th style="width:52px;"></th>
+                  <th>الاسم والرقم الوطني</th>
+                  <th>البريد الإلكتروني</th>
+                  <th>الدور والقسم</th>
+                  <th>الحالة</th>
+                  <th>الإجراءات</th>
+                </tr></thead>
+                <tbody id="usersTable">
+                  <!-- filled by JS -->
+                </tbody>
+              </table>
+            </div>
+            <div class="pagination">
+              <span id="paginationInfo">جارٍ التحميل...</span>
+              <div class="page-btns" id="pageButtons">
+                <button class="page-btn" id="prevPage">
+                  <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+                </button>
+                <button class="page-btn active" data-page="1">1</button>
+                <button class="page-btn" data-page="2">2</button>
+                <button class="page-btn" data-page="3">3</button>
+                <button class="page-btn" id="nextPage">
+                  <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Bottom stat cards -->
+          <div class="stat-grid" style="grid-template-columns:repeat(4,1fr);margin-top:24px;">
+            <div class="stat-card" style="border-right:4px solid #2463eb;">
+              <div class="stat-card-label">إجمالي الطلاب</div>
+              <div class="stat-card-value" id="totalStudents">0</div>
+            </div>
+            <div class="stat-card" style="border-right:4px solid #7c3aed;">
+              <div class="stat-card-label">إجمالي الدكاترة</div>
+              <div class="stat-card-value purple" id="totalDoctors">0</div>
+            </div>
+            <div class="stat-card" style="border-right:4px solid #16a34a;">
+              <div class="stat-card-label">إجمالي المعيدين</div>
+              <div class="stat-card-value green" id="totalTAs">0</div>
+            </div>
+            <div class="stat-card" style="border-right:4px solid #f59e0b;">
+              <div class="stat-card-label">المستخدمون المفعّلون</div>
+              <div class="stat-card-value" style="color:#f59e0b;" id="activeRate">—</div>
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+
+    <!-- ═══ Add / Edit User Modal ═══ -->
+    <div id="addUserModal" class="modal-overlay" style="display:none;">
+      <div class="modal" style="max-width:600px;">
+        <div class="modal-header">
+          <h3 id="addUserModalTitle">إضافة مستخدم جديد</h3>
+          <button class="modal-close" id="closeModal">
+            <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </button>
+        </div>
+
+        <div class="modal-body" style="max-height:68vh;overflow-y:auto;padding-bottom:8px;">
+
+          <!-- Profile Photo -->
+          <div style="display:flex;flex-direction:column;align-items:center;margin-bottom:20px;">
+            <div id="photoPlaceholder"
+              onclick="document.getElementById('newUserPhoto').click()"
+              style="width:88px;height:88px;border-radius:50%;background:#f1f5f9;border:2.5px dashed #cbd5e1;
+                     display:flex;align-items:center;justify-content:center;cursor:pointer;
+                     flex-direction:column;gap:3px;transition:border-color .2s;"
+              onmouseenter="this.style.borderColor='#2463eb'"
+              onmouseleave="this.style.borderColor='#cbd5e1'">
+              <svg viewBox="0 0 24 24" style="width:28px;height:28px;stroke:#94a3b8;fill:none;stroke-width:1.5;">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+              </svg>
+              <span style="font-size:1.1rem;color:#94a3b8;">صورة</span>
+            </div>
+            <img id="userPhotoPreview"
+              style="width:88px;height:88px;border-radius:50%;object-fit:cover;display:none;
+                     border:2.5px solid #e2e8f0;cursor:pointer;"
+              onclick="document.getElementById('newUserPhoto').click()" />
+            <input type="file" id="newUserPhoto" accept="image/*" style="display:none;" />
+            <p style="font-size:1.15rem;color:#94a3b8;margin-top:6px;">اختياري — انقر لرفع صورة الملف الشخصي</p>
+          </div>
+
+          <!-- Role Tabs -->
+          <div class="field-group">
+            <label>نوع المستخدم</label>
+            <div class="role-tabs">
+              <button class="role-tab active" data-role="student" type="button" id="modalRoleStudent">طالب</button>
+              <button class="role-tab" data-role="doctor" type="button" id="modalRoleDoctor">دكتور</button>
+              <button class="role-tab" data-role="ta" type="button" id="modalRoleTA">معيد</button>
+              <button class="role-tab" data-role="admin" type="button" id="modalRoleAdmin">مشرف</button>
+            </div>
+            <input type="hidden" id="newUserRole" value="student" />
+          </div>
+
+          <!-- Year Level (Specific for Students) -->
+          <div class="field-group" id="yearLevelGroup">
+            <label>السنة الدراسية <span style="color:#ef4444;">*</span></label>
+            <select id="newUserYearLevel">
+              <option value="1">السنة الأولى</option>
+              <option value="2">السنة الثانية</option>
+              <option value="3">السنة الثالثة</option>
+              <option value="4">السنة الرابعة</option>
+            </select>
+          </div>
+
+          <!-- Name -->
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+            <div class="field-group">
+              <label>الاسم الأول <span style="color:#ef4444;">*</span></label>
+              <input type="text" id="newUserFirstName" placeholder="مثال: أحمد" />
+            </div>
+            <div class="field-group">
+              <label>اسم العائلة <span style="color:#ef4444;">*</span></label>
+              <input type="text" id="newUserLastName" placeholder="مثال: الشمري" />
+            </div>
+          </div>
+
+          <!-- Email -->
+          <div class="field-group">
+            <label>البريد الإلكتروني <span style="color:#ef4444;">*</span></label>
+            <input type="email" id="newUserEmail" placeholder="email@college.edu" />
+          </div>
+
+          <!-- National ID + Age -->
+          <div style="display:grid;grid-template-columns:2fr 1fr;gap:14px;">
+            <div class="field-group">
+              <label>الرقم الوطني (14 رقم) <span style="color:#ef4444;">*</span></label>
+              <input type="text" id="newUserNatId" placeholder="أدخل الرقم الوطني" maxlength="14" />
+            </div>
+            <div class="field-group">
+              <label>العمر</label>
+              <input type="number" id="newUserAge" placeholder="19" min="15" max="100" />
+            </div>
+          </div>
+
+          <!-- TA Specific -->
+          <div class="field-group" id="taDegreeGroup" style="display:none;">
+            <label>الدرجة العلمية (للمعيدي)</label>
+            <select id="newUserDegree">
+              <option value="Bachelor's">بكالوريوس (Bachelor's)</option>
+              <option value="Master's">ماجستير (Master's)</option>
+            </select>
+          </div>
+
+          <!-- Department + Password -->
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+            <div class="field-group">
+              <label>القسم</label>
+              <select id="newUserDept">
+                <option value="">جارٍ التحميل...</option>
+              </select>
+            </div>
+            <div class="field-group">
+              <label>كلمة المرور</label>
+              <input type="password" id="newUserPassword" placeholder="فارغ = Welcome@123" />
+            </div>
+          </div>
+
+          <!-- Address -->
+          <div class="field-group">
+            <label>العنوان</label>
+            <input type="text" id="newUserAddress" placeholder="المدينة، الحي..." />
+          </div>
+
+          <!-- High School -->
+          <div class="field-group">
+            <label>المدرسة الثانوية</label>
+            <input type="text" id="newUserHighSchool" placeholder="اسم المدرسة الثانوية..." />
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button class="btn btn-secondary" id="cancelModal">إلغاء</button>
+          <button class="btn btn-primary" id="saveUserBtn">
+            <svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2;">
+              <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/>
+              <polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/>
+            </svg>
+            حفظ المستخدم
+          </button>
+        </div>
+        <input type="hidden" id="editUserId" value="" />
+      </div>
+    </div>
+
+    <!-- ═══ User Details Modal ═══ -->
+    <div id="userDetailsModal" class="modal-overlay" style="display:none;">
+      <div class="modal" style="max-width:700px;">
+        <div class="modal-header">
+          <h3>بيانات المستخدم التفصيلية</h3>
+          <button class="modal-close" onclick="closeDetailsModal()">
+            <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </button>
+        </div>
+        <div class="modal-body" id="detailsContent">
+          <!-- Populated by JS -->
+           <div style="display:flex; gap:24px; align-items:flex-start;">
+              <img id="det_photo" src="../../assets/avatar.png" style="width:140px;height:140px;border-radius:12px;object-fit:cover;border:3px solid #f1f5f9;" />
+              <div style="flex:1;">
+                 <h2 id="det_name" style="margin-bottom:4px;">—</h2>
+                 <span id="det_role_badge" class="badge">طالب</span>
+                 <p id="det_email" style="color:#64748b; margin-top:8px;">—</p>
+                 
+                 <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-top:24px;">
+                    <div>
+                       <label style="font-size:0.85rem; color:#94a3b8; display:block; margin-bottom:4px;">الرقم الوطني</label>
+                       <p id="det_natId" style="font-weight:600;">—</p>
+                    </div>
+                    <div>
+                       <label style="font-size:0.85rem; color:#94a3b8; display:block; margin-bottom:4px;">العمر</label>
+                       <p id="det_age" style="font-weight:600;">—</p>
+                    </div>
+                    <div>
+                       <label style="font-size:0.85rem; color:#94a3b8; display:block; margin-bottom:4px;">السنة الدراسية</label>
+                       <p id="det_year" style="font-weight:600;">—</p>
+                    </div>
+                    <div>
+                       <label style="font-size:0.85rem; color:#94a3b8; display:block; margin-bottom:4px;">القسم</label>
+                       <p id="det_dept" style="font-weight:600;">—</p>
+                    </div>
+                    <div style="grid-column: span 2;">
+                       <label style="font-size:0.85rem; color:#94a3b8; display:block; margin-bottom:4px;">العنوان</label>
+                       <p id="det_address" style="font-weight:600;">—</p>
+                    </div>
+                    <div id="det_group_box" style="grid-column: span 2; background:#f8fafc; padding:12px; border-radius:8px; border:1px dashed #e2e8f0;">
+                       <label style="font-size:0.85rem; color:#94a3b8; display:block; margin-bottom:4px;">المجموعة الدراسية</label>
+                       <p id="det_group" style="font-weight:700; color:#2463eb;">غير معين لمجموعة بعد</p>
+                    </div>
+                 </div>
+              </div>
+           </div>
+        </div>
+        <div class="modal-footer" style="padding-top:20px;">
+          <button class="btn btn-secondary" onclick="closeDetailsModal()">إغلاق</button>
+          <button class="btn btn-primary" id="det_edit_btn">تعديل البيانات</button>
+        </div>
+      </div>
+    </div>
+
+    <script src="../../config.js"></script>
+    <script src="../shared/portal-utils.js"></script>
+    <script src="users.js"></script>
+  </body>
+</html>

@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>تسجيل الدخول | EccatOne</title>
+    <meta
+      name="description"
+      content="سجّل دخولك إلى منصة EccatOne لمتابعة رحلتك الأكاديمية"
+    />
+    <link rel="stylesheet" href="login.css" />
+  </head>
+  <body>
+    <!-- ─── Navbar ─── -->
+    <nav>
+      <div class="navbar">
+        <a class="nav-brand" href="../../LandingPage.html">
+          <img src="../../assets/logo.svg" alt="EccatOne Logo" />
+          <span class="nav-brand-text">EccatOne</span>
+        </a>
+        <ul class="nav-links">
+          <li><a href="../../LandingPage.html">الرئيسية</a></li>
+          <li><a href="../../LandingPage.html#about">عن الكلية</a></li>
+          <li><a href="register-step1.html" class="nav-cta">إنشاء حساب</a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <!-- ─── Main ─── -->
+    <main>
+      <div class="auth-card">
+        <!-- Icon -->
+        <div class="form-icon">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 3 2 8l10 5 10-5-10-5ZM2 15l10 5 10-5M2 10l10 5 10-5" />
+          </svg>
+        </div>
+
+        <h1 class="form-title">أهلاً بك مجدداً!</h1>
+        <p class="form-subtitle">سجّل دخولك لمتابعة رحلتك الأكاديمية</p>
+
+        <form id="loginForm" novalidate>
+          <!-- Email -->
+          <div class="input-group">
+            <label for="email">البريد الإلكتروني</label>
+            <div class="input-wrapper">
+              <input
+                type="email"
+                id="email"
+                placeholder="example@college.edu"
+                autocomplete="email"
+                required
+              />
+              <span class="input-icon">
+                <svg viewBox="0 0 24 24">
+                  <path
+                    d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2Zm0 4-8 5-8-5V6l8 5 8-5v2Z"
+                  />
+                </svg>
+              </span>
+            </div>
+          </div>
+
+          <!-- Password -->
+          <div class="input-group">
+            <label for="password">كلمة المرور</label>
+            <div class="input-wrapper">
+              <input
+                type="password"
+                id="password"
+                placeholder="••••••••"
+                autocomplete="current-password"
+                required
+              />
+              <button
+                type="button"
+                class="toggle-password"
+                id="toggleLogin"
+                aria-label="إظهار/إخفاء"
+              >
+                <svg viewBox="0 0 24 24">
+                  <path
+                    d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5ZM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5Zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3Z"
+                  />
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <!-- Remember / Forgot -->
+          <div class="remember-row">
+            <a href="forgot-password.html" class="link" id="forgotLink"
+              >نسيت كلمة المرور؟</a
+            >
+            <div
+              class="right-col"
+              style="display: flex; align-items: center; gap: 8px"
+            >
+              <label for="remember">تذكرني</label>
+              <input type="checkbox" id="remember" />
+            </div>
+          </div>
+
+          <!-- Submit -->
+          <button type="submit" class="btn-primary" id="loginBtn">
+            تسجيل الدخول
+          </button>
+        </form>
+
+        <!-- Register link -->
+        <span class="form-footer-link">
+          ليس لديك حساب؟
+          <a href="register-step1.html" id="registerLink">إنشاء حساب جديد</a>
+        </span>
+      </div>
+    </main>
+
+    <!-- ─── Footer ─── -->
+    <footer>
+      <p>© 2024 EccatOne. جميع الحقوق محفوظة.</p>
+    </footer>
+    <script src="../../config.js"></script>
+    <script src="./login.js"></script>
+  </body>
+</html>
