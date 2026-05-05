@@ -180,7 +180,7 @@ function openCourseModal(idx) {
 
   document.getElementById("mCourseBody").innerHTML = `
     <!-- Info Row -->
-    <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:20px;">
+    <div class="grid-2" style="  gap:12px; margin-bottom:20px;">
       <div class="score-box">
         <div class="score-box-label">المحاضر</div>
         <div style="font-size:1.3rem; font-weight:700; color:#0f172a; margin-top:4px;">

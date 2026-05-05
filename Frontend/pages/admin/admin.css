@@ -790,6 +790,15 @@ table.admin-table {
   color: var(--brand-color);
 }
 
+/* ── Layout Utilities ── */
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+
+/* ── Flex utilities ── */
+.flex-between { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.flex-gap { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+
 /* ── Filter bar ── */
 .filter-bar {
   display: flex;
@@ -1553,6 +1562,7 @@ table.admin-table {
   }
 
   /* Promo / two-col grids */
+  .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
   .promo-row {
     grid-template-columns: 1fr;
   }

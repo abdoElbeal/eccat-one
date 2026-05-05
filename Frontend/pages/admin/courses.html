@@ -149,15 +149,15 @@
       <button class="modal-close" onclick="closeSubjectModal()">✕</button>
     </div>
     <div class="modal-body">
-      <div style="display:grid; grid-template-columns:1fr 1fr; gap:13px;">
+      <div class="grid-2" style="  gap:13px;">
         <div class="field-group"><label>الاسم *</label><input type="text" id="sm_name" /></div>
         <div class="field-group"><label>الكود *</label><input type="text" id="sm_code" /></div>
       </div>
-      <div style="display:grid; grid-template-columns:1fr 1fr; gap:13px;">
+      <div class="grid-2" style="  gap:13px;">
         <div class="field-group"><label>القسم *</label><select id="sm_dept"><option value="">...</option></select></div>
         <div class="field-group"><label>العام الأكاديمي</label><input type="text" id="sm_academicYear" value="2025/2026" /></div>
       </div>
-      <div style="display:grid; grid-template-columns:1fr 1fr; gap:13px;">
+      <div class="grid-2" style="  gap:13px;">
         <div class="field-group"><label>السنة</label>
           <select id="sm_yearLevel"><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option></select>
         </div>
@@ -211,13 +211,13 @@
     </div>
     <div class="modal-body">
       <div class="field-group"><label>المادة *</label><select id="em_subject"><option value="">اختر...</option></select></div>
-      <div style="display:grid; grid-template-columns:1fr 1fr; gap:13px;">
+      <div class="grid-2" style="  gap:13px;">
         <div class="field-group"><label>النوع</label>
           <select id="em_type"><option value="ميدتيرم">ميدتيرم</option><option value="نهائي">نهائي</option><option value="كويز">كويز</option><option value="اختبار عملي">عملي</option></select>
         </div>
         <div class="field-group"><label>المجموعة</label><select id="em_group"><option value="">اختر...</option></select></div>
       </div>
-      <div style="display:grid; grid-template-columns:1fr 1fr; gap:13px;">
+      <div class="grid-2" style="  gap:13px;">
         <div class="field-group"><label>التاريخ *</label><input type="date" id="em_date" /></div>
         <div class="field-group"><label>الوقت *</label><input type="time" id="em_time" /></div>
       </div>
@@ -239,7 +239,7 @@
       <button class="modal-close" onclick="closeStudentBulkGradeModal()">✕</button>
     </div>
     <div class="modal-body">
-      <div style="display:grid; grid-template-columns:1.5fr 1fr 1fr; gap:14px; margin-bottom:18px; background:#f8fafc; padding:14px; border-radius:12px; border:1px solid #e2e8f0;">
+      <div class="grid-3" style="  gap:14px; margin-bottom:18px; background:#f8fafc; padding:14px; border-radius:12px; border:1px solid #e2e8f0;">
         <div class="field-group"><label>الطالب</label><select id="bulk_studentSelect" onchange="loadStudentSubjectsForBulk()"><option value="">اختر...</option></select></div>
         <div class="field-group"><label>العام الأكاديمي</label><input type="text" id="bulk_academicYear" value="2025/2026" onchange="loadStudentSubjectsForBulk()" /></div>
         <div class="field-group"><label>الفصل</label>
@@ -278,7 +278,7 @@
         <label>المادة</label>
         <input type="text" id="gm_subjectName" readonly style="background:#f8fafc; color:#64748b;" />
       </div>
-      <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px;">
+      <div class="grid-3" style="  gap:12px;">
         <div class="field-group">
           <label>أعمال <small style="color:#94a3b8;">/20</small></label>
           <input type="number" id="gm_activities" min="0" max="20" placeholder="0" />
@@ -292,7 +292,7 @@
           <input type="number" id="gm_final" min="0" max="50" placeholder="0" />
         </div>
       </div>
-      <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+      <div class="grid-2" style="  gap:12px;">
         <div class="field-group">
           <label>الفصل</label>
           <select id="gm_semester"><option value="1">الفصل الأول</option><option value="2">الفصل الثاني</option></select>

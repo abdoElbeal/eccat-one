@@ -30,5 +30,4 @@
 
 @media (max-width: 1100px) {
   .dash-grid { grid-template-columns: 1fr; }
-  .stat-grid[style*="repeat(4"] { grid-template-columns: repeat(2, 1fr) !important; }
 }

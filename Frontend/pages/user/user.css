@@ -163,7 +163,7 @@ body {
 .page-body { flex: 1; padding: 24px; }
 
 /* ── Stat cards ── */
-.stat-grid { display: grid; gap: 14px; margin-bottom: 22px; }
+.stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 14px; margin-bottom: 22px; }
 .stat-card {
   background: #fff; border-radius: 14px;
   padding: 18px 20px;
@@ -302,6 +302,8 @@ body {
 .mb-20 { margin-bottom: 20px; }
 .w-full { width: 100%; }
 .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
 
 /* ── Utility ── */
 .flex-wrap { flex-wrap: wrap; }
@@ -383,7 +385,7 @@ body {
   .page-body { padding: 18px 16px; }
 
   /* Grids */
-  .grid-2 { grid-template-columns: 1fr; }
+  .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
 
   /* Panel header wraps */
   .panel-header { flex-wrap: wrap; }
@@ -415,7 +417,7 @@ body {
   .data-table { min-width: 500px; }
 
   /* Grids */
-  .grid-2 { grid-template-columns: 1fr; }
+  .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
 
   /* Panel header */
   .panel-header .btn { font-size: 1.15rem; padding: 8px 14px; flex: 1; justify-content: center; }
