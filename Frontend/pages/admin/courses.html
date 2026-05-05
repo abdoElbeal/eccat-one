@@ -42,6 +42,7 @@
 
   <div class="admin-main">
     <header class="topbar">
+          <button class="hamburger-btn" id="hamburgerBtn" aria-label="فتح القائمة" aria-expanded="false"><svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
       <div class="topbar-avatar" id="topbarAvatar"></div>
       <button class="topbar-bell" aria-label="إشعارات"><svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 0 1-3.46 0"/></svg></button>
       <span class="topbar-title">نظام إدارة الكلية</span>
@@ -165,6 +166,14 @@
         </div>
       </div>
       <div class="field-group"><label>الوصف</label><textarea id="sm_desc" rows="2"></textarea></div>
+      <div class="field-group">
+        <label>صورة المادة (اختياري)</label>
+        <div style="display:flex; align-items:center; gap:10px;">
+          <input type="file" id="sm_thumbnail" accept="image/*" style="flex:1; padding:8px;" />
+          <div id="thumbPlaceholder" style="width:50px;height:50px;background:#f1f5f9;border-radius:6px;border:1px dashed #cbd5e1;display:flex;align-items:center;justify-content:center;color:#94a3b8;font-size:20px;flex-shrink:0;">🖼️</div>
+          <img id="thumbPreview" style="width:50px;height:50px;border-radius:6px;object-fit:cover;display:none;flex-shrink:0;" />
+        </div>
+      </div>
     </div>
     <div class="modal-footer">
       <button class="btn btn-secondary" onclick="closeSubjectModal()">إلغاء</button>
@@ -309,6 +318,9 @@
 <script src="../../config.js"></script>
 <script src="../shared/portal-utils.js"></script>
 <script src="courses.js"></script>
+    <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+    <script src="../shared/sidebar-toggle.js"></script>
+
 
 </body>
 </html>

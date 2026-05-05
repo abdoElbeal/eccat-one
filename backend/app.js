@@ -30,6 +30,7 @@ app.use(
   allowedHeaders: ["Content-Type", "Authorization"],
 }
   */
+
 app.use(cors());
 
 // ─── 2. Body Parsing ─────────────────────────────────────────────────────────

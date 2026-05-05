@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="ar" dir="rtl">
   <head>
     <meta charset="UTF-8" />
@@ -32,6 +32,7 @@
 
       <div class="portal-main msg-main">
         <header class="topbar">
+          <button class="hamburger-btn" id="hamburgerBtn" aria-label="فتح القائمة" aria-expanded="false"><svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
           <div class="topbar-avatar" id="topbarAvatar"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
           <div class="topbar-user-info"><strong id="topbarName">د. أحمد السعدي</strong><span id="topbarSub">قسم علوم الحاسب</span></div>
           <button class="topbar-icon-btn"><svg viewBox="0 0 24 24" fill="none" stroke="#475569" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 0 1-3.46 0"/></svg></button>
@@ -196,5 +197,8 @@
     <script src="../../config.js"></script>
     <script src="../shared/portal-utils.js"></script>
     <script src="messages.js"></script>
+    <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+    <script src="../shared/sidebar-toggle.js"></script>
+
   </body>
 </html>
