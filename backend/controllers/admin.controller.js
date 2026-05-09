@@ -19,6 +19,7 @@ import Grade from "../models/Grade.js";
 import Announcement from "../models/Announcement.js";
 import bcrypt from "bcryptjs";
 import multerMiddlewarePromise from "../middlewares/multar.middleware.js";
+import Billing from "../models/Billing.js";
 
 // ─── Image Save Helper ────────────────────────────────────────────────────────
 async function _saveFile(file, subfolder = "profile-images") {
@@ -1339,6 +1340,9 @@ export default {
   getSupportTickets,
   respondToSupportTicket,
   updateProfile,
+  generateBills,
+  getAllBills,
+  recordPayment,
   getRecentActivities: async (req, res) => {
     try {
       const activities = await Activity.find({})
@@ -1383,5 +1387,121 @@ export async function respondToSupportTicket(req, res) {
     res.status(200).json({ message: "تم الرد على الطلب بنجاح", ticket });
   } catch (err) {
     res.status(500).json({ message: err.message });
+  }
+}
+
+// --- BILLING / FINANCIALS ----------------------------------------------------
+export async function generateBills(req, res) {
+  try {
+    const { academicYear, semester, type, amount, title, dueDate } = req.body;
+    if (!academicYear || !semester || !type || !amount || !title) {
+      return res.status(400).json({ message: "يرجى تعبئة جميع الحقول المطلوبة (السنة الأكاديمية، الفصل، النوع، القيمة، العنوان)" });
+    }
+
+    const students = await Student.find({}).select("_id");
+    if (!students.length) {
+      return res.status(404).json({ message: "لا يوجد طلاب مسجلين لإصدار فواتير لهم" });
+    }
+
+    const bills = students.map((s) => ({
+      student: s._id,
+      academicYear,
+      semester,
+      type,
+      title,
+      amount: Number(amount),
+      paidAmount: 0,
+      status: "unpaid",
+      dueDate: dueDate ? new Date(dueDate) : undefined,
+    }));
+
+    await Billing.insertMany(bills);
+
+    await _logActivity(
+      req.user._id,
+      "إصدار فواتير",
+      `تم إصدار فواتير ${type} للعام الدراسي ${academicYear}`,
+      "purple"
+    );
+
+    res.status(201).json({ message: `تم إصدار الفواتير لـ ${students.length} طالب بنجاح` });
+  } catch (err) {
+    console.error("generateBills Error:", err);
+    res.status(500).json({ message: "حدث خطأ أثناء إصدار الفواتير" });
+  }
+}
+
+export async function getAllBills(req, res) {
+  try {
+    const { academicYear, semester, status, search, page = 1, limit = 20 } = req.query;
+    const query = {};
+
+    if (academicYear) query.academicYear = academicYear;
+    if (semester) query.semester = semester;
+    if (status) query.status = status;
+
+    if (search) {
+      const users = await User.find({
+        $or: [
+          { firstName: { $regex: search, $options: "i" } },
+          { lastName: { $regex: search, $options: "i" } },
+          { nationalId: { $regex: search, $options: "i" } },
+        ],
+        role: "student"
+      }).select("_id");
+      query.student = { $in: users.map(u => u._id) };
+    }
+
+    const skip = (Math.max(1, parseInt(page)) - 1) * Math.max(1, parseInt(limit));
+    const bills = await Billing.find(query)
+      .populate("student", "firstName lastName nationalId email")
+      .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(parseInt(limit));
+
+    const total = await Billing.countDocuments(query);
+
+    res.status(200).json({ bills, total });
+  } catch (err) {
+    console.error("getAllBills Error:", err);
+    res.status(500).json({ message: "حدث خطأ أثناء جلب الفواتير" });
+  }
+}
+
+export async function recordPayment(req, res) {
+  try {
+    const { id } = req.params;
+    const { amount, receiptNumber, notes } = req.body;
+
+    if (!amount || amount <= 0) {
+      return res.status(400).json({ message: "يرجى إدخال مبلغ صحيح" });
+    }
+
+    const bill = await Billing.findById(id).populate("student", "firstName lastName");
+    if (!bill) {
+      return res.status(404).json({ message: "الفاتورة غير موجودة" });
+    }
+
+    bill.paidAmount += Number(amount);
+    bill.transactions.push({
+      amount: Number(amount),
+      receiptNumber: receiptNumber || `REC-${Date.now().toString().slice(-6)}`,
+      notes: notes || "",
+      recordedBy: req.user._id,
+    });
+
+    await bill.save();
+
+    await _logActivity(
+      req.user._id,
+      "تسجيل دفعة",
+      `تم تسجيل دفعة بقيمة ${amount} للفاتورة الخاصة بـ ${bill.student.firstName}`,
+      "green"
+    );
+
+    res.status(200).json({ message: "تم تسجيل الدفعة بنجاح", bill });
+  } catch (err) {
+    console.error("recordPayment Error:", err);
+    res.status(500).json({ message: "حدث خطأ أثناء تسجيل الدفعة" });
   }
 }

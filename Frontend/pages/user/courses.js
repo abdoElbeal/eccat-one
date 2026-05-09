@@ -245,9 +245,20 @@ function openCourseModal(idx) {
     </div>`}
 
     <!-- Exams -->
-    <div>
+    <div style="margin-bottom:20px;">
       <h4 style="font-size:1.4rem; font-weight:700; color:#1e293b; margin-bottom:12px;">📅 الاختبارات القادمة</h4>
       <div id="courseExamsList">
+        <div class="skeleton-card" style="height:50px; border-radius:10px;"></div>
+      </div>
+    </div>
+
+    <!-- Assignments -->
+    <div>
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+        <h4 style="font-size:1.4rem; font-weight:700; color:#1e293b;">📝 الواجبات النشطة</h4>
+        <a href="assignments.html" style="font-size:1.15rem; color:#2463eb; font-weight:600; text-decoration:none;">عرض الكل ←</a>
+      </div>
+      <div id="courseAssignmentsList">
         <div class="skeleton-card" style="height:50px; border-radius:10px;"></div>
       </div>
     </div>
@@ -255,6 +266,7 @@ function openCourseModal(idx) {
 
   document.getElementById("courseModal").style.display = "flex";
   fetchCourseExams(course._id);
+  fetchCourseAssignments(course._id);
 }
 
 function getLetterGrade(score) {
@@ -281,16 +293,55 @@ async function fetchCourseExams(subjectId) {
       return;
     }
 
-    list.innerHTML = exams.map(e => `
-      <div class="exam-item">
+    const LABELS = { quiz:"كويز", midterm:"ميدتيرم", final:"نهائي", lab:"عملي", oral:"شفهي" };
+    const COLORS = { quiz:"#7c3aed", midterm:"#2463eb", final:"#ea580c", lab:"#16a34a", oral:"#0891b2" };
+
+    list.innerHTML = exams.map(e => {
+      const lbl = LABELS[e.type] || e.type || "اختبار";
+      const clr = COLORS[e.type] || "#2463eb";
+      return `
+        <div class="exam-item" style="border-right: 4px solid ${clr};">
+          <div class="exam-item-info">
+            <h4 style="color:${clr};">${lbl}</h4>
+            <p>${new Date(e.date).toLocaleDateString("ar-EG", { weekday:"long", month:"long", day:"numeric" })} · ${e.time}</p>
+            ${e.notes ? `<div style="font-size:1.1rem; color:#64748b; margin-top:4px;">📌 ${e.notes}</div>` : ""}
+          </div>
+          <span class="badge" style="background:${clr}15; color:${clr};">🏛 ${e.location || "غير محدد"}</span>
+        </div>`;
+    }).join("");
+  } catch (err) {
+    console.error(err);
+    list.innerHTML = `<p style="color:#ef4444; font-size:1.2rem;">خطأ في تحميل الاختبارات</p>`;
+  }
+}
+
+async function fetchCourseAssignments(subjectId) {
+  const list = document.getElementById("courseAssignmentsList");
+  if (!list) return;
+  try {
+    const res = await fetch(
+      `${window.CONFIG.API_BASE_URL}/api/student/assignments`,
+      { headers: PortalUtils.getAuthHeaders() }
+    );
+    const d = await res.json();
+    // Filter for this subject only
+    const items = (d.assignments || []).filter(a => a.subject?._id === subjectId).slice(0, 3);
+
+    if (!items.length) {
+      list.innerHTML = `<p style="font-size:1.3rem; color:#94a3b8; text-align:center; padding:16px; background:#f8fafc; border-radius:10px;">لا توجد واجبات نشطة حالياً</p>`;
+      return;
+    }
+
+    list.innerHTML = items.map(a => `
+      <div class="exam-item" style="border-right: 4px solid ${a.mySubmission ? '#22c55e' : '#2463eb'};">
         <div class="exam-item-info">
-          <h4>${e.type}</h4>
-          <p>${new Date(e.date).toLocaleDateString("ar-EG", { weekday:"long", year:"numeric", month:"long", day:"numeric" })} · ${e.time}</p>
+          <h4>${a.title}</h4>
+          <p>⏳ موعد التسليم: ${new Date(a.dueDate).toLocaleString("ar-EG")}</p>
         </div>
-        <span class="badge badge-blue">🏛 ${e.location}</span>
+        <span class="badge ${a.mySubmission ? 'badge-green' : 'badge-blue'}">${a.mySubmission ? 'تم التسليم' : 'لم يسلم'}</span>
       </div>`).join("");
   } catch {
-    list.innerHTML = `<p style="color:#ef4444; font-size:1.2rem;">خطأ في تحميل الاختبارات</p>`;
+    list.innerHTML = `<p style="color:#ef4444; font-size:1.2rem;">خطأ في تحميل الواجبات</p>`;
   }
 }
 

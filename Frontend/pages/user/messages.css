@@ -3,7 +3,7 @@
    ══════════════════════════════════════════ */
 
 /* Full-height layout */
-.messages-main { height: 100vh; overflow: hidden; }
+.msg-main { height: 100vh; overflow: hidden; }
 .msg-layout {
   display: grid;
   grid-template-columns: 280px 1fr 240px;
@@ -79,7 +79,6 @@
   display: flex; align-items: center; justify-content: center;
   font-size: 1.4rem; font-weight: 700; flex-shrink: 0;
 }
-.group-av { border-radius: 12px; }
 
 .ci-info { flex: 1; min-width: 0; position: relative; }
 .ci-top { display: flex; justify-content: space-between; align-items: center; }
@@ -138,22 +137,13 @@
 .chat-body::-webkit-scrollbar { width: 4px; }
 .chat-body::-webkit-scrollbar-thumb { background: #e2e8f0; border-radius: 4px; }
 
-/* Date separator */
-.date-sep {
-  text-align: center; margin: 6px 0;
-}
-.date-sep span {
-  background: #e2e8f0; color: #64748b;
-  font-size: 1.15rem; padding: 3px 14px; border-radius: 20px;
-}
-
 /* Bubble rows */
 .bubble-row {
   display: flex; align-items: flex-end; gap: 8px;
   max-width: 75%;
 }
-.bubble-row.received { align-self: flex-end; flex-direction: row; }
-.bubble-row.sent { align-self: flex-start; flex-direction: row-reverse; }
+.bubble-row.received { align-self: flex-start; flex-direction: row; }
+.bubble-row.sent { align-self: flex-end; flex-direction: row-reverse; }
 
 .b-avatar {
   width: 28px; height: 28px; border-radius: 50%;
@@ -181,25 +171,6 @@
   opacity: .6; margin-top: 4px; text-align: left;
 }
 .bubble.sent-b .b-time { text-align: right; }
-
-/* Attachment */
-.attachment {
-  display: flex; align-items: center; gap: 10px;
-  background: #f1f5f9; border-radius: 10px; padding: 10px 12px;
-  margin-top: 8px;
-}
-.att-icon { font-size: 1.8rem; }
-.att-info { flex: 1; }
-.att-name { font-size: 1.2rem; font-weight: 600; color: #0f172a; }
-.att-size { font-size: 1.1rem; color: #64748b; }
-.att-download {
-  width: 30px; height: 30px; border-radius: 8px;
-  border: none; background: #2463eb; cursor: pointer;
-  display: flex; align-items: center; justify-content: center;
-  transition: background .2s;
-}
-.att-download:hover { background: #1d4ed8; }
-.att-download svg { width: 14px; height: 14px; fill: none; stroke: #fff; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 
 /* Typing indicator */
 .typing-bubble {
@@ -273,11 +244,8 @@
 .ip-section-title { font-size: 1.15rem; font-weight: 700; color: #94a3b8; text-transform: uppercase; letter-spacing: .5px; margin-bottom: 10px; }
 .ip-row { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; font-size: 1.2rem; color: #475569; }
 .ip-row svg { width: 15px; height: 15px; flex-shrink: 0; }
-.ip-file { display: flex; align-items: center; gap: 8px; padding: 8px 0; border-bottom: 1px solid #f8fafc; font-size: 1.2rem; color: #334155; }
-.ip-file-icon { font-size: 1.4rem; }
-.ip-badge-list { display: flex; flex-direction: column; gap: 6px; }
 
-/* Modal reuse (from user.css) */
+/* Modal styles */
 .modal-overlay {
   position: fixed; inset: 0; background: rgba(15,23,42,.5);
   z-index: 200; display: flex; align-items: center; justify-content: center;
@@ -306,12 +274,6 @@
   background: #fff; border: 1.5px solid #e2e8f0; border-radius: 10px;
   box-shadow: 0 8px 24px rgba(0,0,0,.1); overflow: hidden;
 }
-.suggestion-item {
-  display: flex; align-items: center; gap: 10px;
-  padding: 10px 14px; cursor: pointer; transition: background .15s;
-  font-size: 1.3rem;
-}
-.suggestion-item:hover { background: #f8fafc; }
 
 @media (max-width: 1100px) {
   .msg-layout { grid-template-columns: 240px 1fr; }

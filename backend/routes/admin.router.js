@@ -88,4 +88,9 @@ router.patch("/profile", ...auth, adminController.updateProfile);
 router.get("/support", ...auth, adminController.getSupportTickets);
 router.put("/support/:ticketId", ...auth, adminController.respondToSupportTicket);
 
+// ─── BILLING / FINANCIALS ────────────────────────────────────────────────────
+router.post("/billing/generate", ...auth, adminController.generateBills);
+router.get("/billing", ...auth, adminController.getAllBills);
+router.post("/billing/:id/pay", ...auth, adminController.recordPayment);
+
 export default router;

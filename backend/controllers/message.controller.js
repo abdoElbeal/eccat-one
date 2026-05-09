@@ -18,12 +18,27 @@ async function sendMessage(req, res) {
       return res.status(400).json({ message: "Recipient and content are required" });
     }
 
-    // RESTRICTION: Student can only message doctors
-    if (req.user.role === "student") {
-      const recipient = await User.findById(recipientId).select("role").lean();
-      if (!recipient || recipient.role !== "doctor") {
-        return res.status(403).json({ message: "لا يُسمح للطلاب بمراسلة سوى أعضاء هيئة التدريس." });
-      }
+    // RESTRICTIONS
+    const recipientUser = await User.findById(recipientId).select("role").lean();
+    if (!recipientUser) return res.status(404).json({ message: "المستلم غير موجود." });
+
+    if (req.user.role === "student" && recipientUser.role !== "doctor") {
+      return res.status(403).json({ message: "لا يُسمح للطلاب بمراسلة سوى أعضاء هيئة التدريس." });
+    }
+    if (req.user.role === "doctor" && recipientUser.role === "doctor") {
+      return res.status(403).json({ message: "لا يُسمح للدكتور بمراسلة دكتور آخر بناءً على سياسة النظام." });
+    }
+
+    // RATE LIMITING: 1 message per minute per recipient
+    const oneMinuteAgo = new Date(Date.now() - 60 * 1000);
+    const lastMessage = await Message.findOne({
+      sender: req.user._id,
+      recipient: recipientId,
+      createdAt: { $gte: oneMinuteAgo }
+    }).lean();
+
+    if (lastMessage) {
+      return res.status(429).json({ message: "يمكنك إرسال رسالة واحدة فقط كل دقيقة لنفس الشخص. يرجى الانتظار." });
     }
 
     const newMessage = new Message({
@@ -146,11 +161,12 @@ async function searchUsers(req, res) {
       _id: { $ne: req.user._id } // Don't include self
     };
 
-    if (role) filter.role = role;
-    
-    // RESTRICTION: Student can only search for doctors
     if (req.user.role === "student") {
       filter.role = "doctor";
+    } else if (req.user.role === "doctor") {
+      filter.role = { $in: ["admin", "student"] };
+    } else {
+      if (role) filter.role = role;
     }
 
     const users = await User.find(filter)

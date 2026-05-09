@@ -1,3 +1,4 @@
+import mongoose   from "mongoose";
 import User       from "../models/User.js";
 import Student    from "../models/Student.js";
 import Schedule   from "../models/Schedule.js";
@@ -5,9 +6,12 @@ import Grade      from "../models/Grade.js";
 import Subject    from "../models/Subject.js";
 import Group      from "../models/Group.js";
 import Announcement from "../models/Announcement.js";
+import Attendance from "../models/Attendance.js";
+import Assignment from "../models/Assignment.js";
+import Exam       from "../models/Exam.js";
 import path       from "path";
 import fs         from "fs/promises";
-import { randomUUID } from "crypto";
+import crypto, { randomUUID } from "crypto";
 import { fileURLToPath } from "url";
 
 // ─── Helper: get doctor with department ──────────────────────────────────────
@@ -199,30 +203,57 @@ async function getDoctorGrades(req, res) {
   try {
     const { subject: subjectCode, group: groupId } = req.query;
 
+    // Subject list for dropdown
+    const mySchedules = await Schedule
+      .find({ doctorId: req.user._id })
+      .populate("subjectId", "name code _id")
+      .populate("groupId", "name _id")
+      .lean();
+
+    const subjectSet = new Map();
+    const groupSet   = new Map();
+
+    mySchedules.forEach(s => {
+      if (s.subjectId) subjectSet.set(s.subjectId._id.toString(), { _id: s.subjectId._id, code: s.subjectId.code, name: s.subjectId.name });
+      if (s.groupId)   groupSet.set(s.groupId._id.toString(),     { _id: s.groupId._id,   name: s.groupId.name });
+    });
+
+    const subjectsList = [...subjectSet.values()];
+    const groupsList   = [...groupSet.values()];
+
     // Resolve subject by code
-    const subject = subjectCode
-      ? await Subject.findOne({ code: { $regex: new RegExp(`^${subjectCode}$`, "i") } }).lean()
+    const subject = subjectCode && subjectCode !== "__placeholder__"
+      ? await Subject.findOne({ code: { $regex: new RegExp(`^${escapeRegex(subjectCode)}$`, "i") } }).lean()
       : null;
 
     if (!subject) {
-      return res.status(200).json({ grades: [], subjects: [] });
+      return res.status(200).json({ grades: [], subjects: subjectsList, groups: groupsList });
     }
 
-    // Get students in matching groups for this subject
+    // Get students linked to this subject via groupId OR enrolledSubjects
     const schedules = await Schedule
       .find({ doctorId: req.user._id, subjectId: subject._id })
-      .populate("groupId", "name")
+      .populate("groupId", "name _id")
       .lean();
 
-    const groupIds = [...new Set(schedules.map(s => s.groupId?._id.toString()).filter(Boolean))];
+    const groupIds = [...new Set(schedules.map(s => s.groupId?._id?.toString()).filter(Boolean))];
 
-    const filter = { groupId: { $in: groupIds } };
-    if (groupId && groupId !== "all") filter.groupId = groupId;
+    // Build smart student query
+    let studentQuery;
+    if (groupId && groupId !== "all") {
+      studentQuery = { groupId: new mongoose.Types.ObjectId(groupId) };
+    } else {
+      const orConditions = [];
+      if (groupIds.length) orConditions.push({ groupId: { $in: groupIds.map(id => new mongoose.Types.ObjectId(id)) } });
+      orConditions.push({ enrolledSubjects: subject._id });
+      studentQuery = { $or: orConditions };
+    }
 
     const students = await Student
-      .find(filter)
+      .find(studentQuery)
       .select("firstName lastName email nationalId groupId")
       .populate("groupId", "name")
+      .sort({ firstName: 1 })
       .lean();
 
     const grades = await Promise.all(students.map(async st => {
@@ -231,10 +262,10 @@ async function getDoctorGrades(req, res) {
         .lean();
 
       return {
-        studentId:   st._id,
-        studentName: `${st.firstName} ${st.lastName}`,
-        studentNo:   st.nationalId,
-        group:       st.groupId?.name || "—",
+        studentId:     st._id,
+        studentName:   `${st.firstName} ${st.lastName}`,
+        studentNo:     st.nationalId,
+        group:         st.groupId?.name || "—",
         homeworkScore: grade?.activities ?? null,
         midtermScore:  grade?.midTerm   ?? null,
         finalScore:    grade?.final     ?? null,
@@ -244,26 +275,19 @@ async function getDoctorGrades(req, res) {
       };
     }));
 
-    // Subject list for dropdown
-    const mySchedules = await Schedule
-      .find({ doctorId: req.user._id })
-      .populate("subjectId", "name code")
-      .lean();
-    const subjectSet = new Map();
-    mySchedules.forEach(s => {
-      if (s.subjectId) subjectSet.set(s.subjectId.code, { code: s.subjectId.code, name: s.subjectId.name });
-    });
-
     return res.status(200).json({
       grades,
-      subjects:  [...subjectSet.values()],
-      groups:    schedules.map(s => s.groupId).filter(Boolean),
+      subjects: subjectsList,
+      groups:   schedules.map(s => s.groupId).filter(Boolean),
     });
   } catch (err) {
     console.error("getDoctorGrades error:", err);
     return res.status(500).json({ message: "Internal server error" });
   }
 }
+
+function escapeRegex(str) { return str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); }
+
 
 // ─── 5. SAVE / UPDATE GRADE ─────────────────────────────────────────────────
 async function updateGrade(req, res) {
@@ -310,70 +334,90 @@ async function updateGrade(req, res) {
 // ─── 6. MY STUDENTS ─────────────────────────────────────────────────────────
 async function getDoctorStudents(req, res) {
   try {
-    const { course, group, search, page = 1, limit = 20 } = req.query;
+    const { group, search, page = 1, limit = 20 } = req.query;
     const skip = (parseInt(page) - 1) * parseInt(limit);
 
-    // Find groups for this doctor
+    // Find all schedules for this doctor → get their groupIds + subjectIds
     const schedules = await Schedule
       .find({ doctorId: req.user._id })
-      .populate("subjectId", "name code")
+      .populate("subjectId", "name code _id")
       .populate("groupId",   "name _id")
       .lean();
 
-    let groupIds = [...new Set(schedules.map(s => s.groupId?._id.toString()).filter(Boolean))];
+    const groupIds   = [...new Set(schedules.map(s => s.groupId?._id?.toString()).filter(Boolean))];
+    const subjectIds = [...new Set(schedules.map(s => s.subjectId?._id?.toString()).filter(Boolean))];
 
-    if (group && group !== "all") {
-      groupIds = [group];
-    }
-
-    if (!groupIds.length) return res.status(200).json({ students: [], total: 0, groups: [] });
-
-    const filter = { groupId: { $in: groupIds } };
-    if (search?.trim()) {
-      filter.$or = [
-        { firstName: { $regex: search, $options: "i" } },
-        { lastName:  { $regex: search, $options: "i" } },
-        { email:     { $regex: search, $options: "i" } },
-      ];
-    }
-
-    const total    = await Student.countDocuments(filter);
-    const students = await Student
-      .find(filter)
-      .select("firstName lastName email nationalId gpa groupId yearLevel department")
-      .populate("groupId",    "name")
-      .populate("department", "name")
-      .skip(skip)
-      .limit(parseInt(limit))
-      .lean();
-
-    // Get grade summary per student for courses taught by this doctor
-    const subjectIds = [...new Set(schedules.map(s => s.subjectId?._id.toString()).filter(Boolean))];
-
-    const enriched = await Promise.all(students.map(async st => {
-      const grades = subjectIds.length
-        ? await Grade.find({ student: st._id, subject: { $in: subjectIds } }).select("total status subject").lean()
-        : [];
-
-      return {
-        _id:          st._id,
-        name:         `${st.firstName} ${st.lastName}`,
-        email:        st.email,
-        nationalId:   st.nationalId,
-        gpa:          +(st.gpa || 0).toFixed(2),
-        group:        st.groupId?.name || "—",
-        department:   st.department?.name || "—",
-        yearLevel:    st.yearLevel,
-        passedCourses: grades.filter(g => g.status === "passed").length,
-        totalCourses:  grades.length,
-      };
-    }));
-
-    // Group list for filter dropdown
+    // Group list for the dropdown
     const groupList = schedules
       .filter(s => s.groupId)
       .map(s => ({ _id: s.groupId._id, name: s.groupId.name }))
       .filter((v, i, a) => a.findIndex(x => x._id.toString() === v._id.toString()) === i);
+
+    // Build a query that matches students by:
+    //  - groupId in doctor's groups (primary)
+    //  - OR enrolledSubjects overlap with doctor's subjects (fallback)
+    //  - OR ALL students if doctor has no groups at all
+    let studentQuery = {};
+
+    if (group && group !== "all") {
+      // Specific group selected
+      studentQuery.groupId = new mongoose.Types.ObjectId(group);
+    } else if (groupIds.length > 0 || subjectIds.length > 0) {
+      const orConditions = [];
+      if (groupIds.length)   orConditions.push({ groupId: { $in: groupIds.map(id => new mongoose.Types.ObjectId(id)) } });
+      if (subjectIds.length) orConditions.push({ enrolledSubjects: { $in: subjectIds.map(id => new mongoose.Types.ObjectId(id)) } });
+      studentQuery = { $or: orConditions };
+    }
+    // else: no filter → will return empty (doctor has no subjects yet)
+
+    // Add search filter
+    if (search?.trim()) {
+      const searchRegex = { $regex: search.trim(), $options: "i" };
+      const searchOr = [
+        { firstName:  searchRegex },
+        { lastName:   searchRegex },
+        { email:      searchRegex },
+        { nationalId: searchRegex },
+      ];
+      if (studentQuery.$or) {
+        // Combine: (groupId OR subjects) AND (search conditions)
+        studentQuery = { $and: [{ $or: studentQuery.$or }, { $or: searchOr }] };
+      } else if (Object.keys(studentQuery).length > 0) {
+        studentQuery.$or = searchOr;
+      } else {
+        studentQuery = { $or: searchOr };
+      }
+    }
+
+    const total    = await Student.countDocuments(studentQuery);
+    const students = await Student
+      .find(studentQuery)
+      .select("firstName lastName email nationalId gpa groupId yearLevel department enrolledSubjects")
+      .populate("groupId",    "name")
+      .populate("department", "name")
+      .sort({ gpa: -1 })
+      .skip(skip)
+      .limit(parseInt(limit))
+      .lean();
+
+    const enriched = await Promise.all(students.map(async st => {
+      const grades = subjectIds.length
+        ? await Grade.find({ student: st._id, subject: { $in: subjectIds } }).select("total status").lean()
+        : [];
+
+      return {
+        _id:           st._id,
+        name:          `${st.firstName} ${st.lastName}`,
+        email:         st.email,
+        nationalId:    st.nationalId,
+        gpa:           +(st.gpa || 0).toFixed(2),
+        group:         st.groupId?.name || "—",
+        department:    st.department?.name || "—",
+        yearLevel:     st.yearLevel || "—",
+        passedCourses: grades.filter(g => g.status === "passed").length,
+        totalCourses:  grades.length,
+      };
+    }));
 
     return res.status(200).json({
       students:   enriched,
@@ -515,10 +559,333 @@ async function getAnnouncements(req, res) {
   }
 }
 
+// ─── 10. ATTENDANCE SYSTEM ───────────────────────────────────────────────────
+async function startAttendanceSession(req, res) {
+  try {
+    const { subject, group } = req.body;
+    if (!subject || !group) return res.status(400).json({ message: "Subject and Group are required" });
+
+    // Close any active session for this doctor
+    await Attendance.updateMany({ doctor: req.user._id, isActive: true }, { isActive: false });
+
+    // Get all students in this group
+    const students = await Student.find({ groupId: group }).select("_id").lean();
+    
+    const token = crypto.randomBytes(16).toString("hex");
+    const session = new Attendance({
+      doctor: req.user._id,
+      subject,
+      group,
+      isActive: true,
+      currentQrToken: token,
+      tokenExpiresAt: new Date(Date.now() + 30000), // 30 seconds
+      records: students.map(s => ({
+        student: s._id,
+        status: "absent",
+      }))
+    });
+
+    await session.save();
+    return res.status(201).json({ message: "Session started", session });
+  } catch (err) {
+    console.error("startAttendanceSession error:", err);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+}
+
+async function refreshQrToken(req, res) {
+  try {
+    const { sessionId } = req.params;
+    const session = await Attendance.findOne({ _id: sessionId, doctor: req.user._id, isActive: true });
+    if (!session) return res.status(404).json({ message: "Active session not found" });
+
+    const token = crypto.randomBytes(16).toString("hex");
+    session.currentQrToken = token;
+    session.tokenExpiresAt = new Date(Date.now() + 30000); // 30 seconds
+    await session.save();
+
+    return res.status(200).json({ token, expiresAt: session.tokenExpiresAt });
+  } catch (err) {
+    console.error("refreshQrToken error:", err);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+}
+
+async function getAttendanceSession(req, res) {
+  try {
+    const { sessionId } = req.params;
+    const session = await Attendance.findOne({ _id: sessionId, doctor: req.user._id })
+      .populate("records.student", "firstName lastName nationalId email")
+      .lean();
+    
+    if (!session) return res.status(404).json({ message: "Session not found" });
+
+    return res.status(200).json({ session });
+  } catch (err) {
+    console.error("getAttendanceSession error:", err);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+}
+
+async function toggleManualAttendance(req, res) {
+  try {
+    const { sessionId, studentId } = req.params;
+    const session = await Attendance.findOne({ _id: sessionId, doctor: req.user._id });
+    if (!session) return res.status(404).json({ message: "Session not found" });
+
+    const record = session.records.find(r => r.student.toString() === studentId);
+    if (!record) return res.status(404).json({ message: "Student not found in this session" });
+
+    record.status = record.status === "present" ? "absent" : "present";
+    record.method = "manual";
+    record.markedAt = new Date();
+    await session.save();
+
+    return res.status(200).json({ message: "Attendance toggled", status: record.status });
+  } catch (err) {
+    console.error("toggleManualAttendance error:", err);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+}
+
+async function closeAttendanceSession(req, res) {
+  try {
+    const { sessionId } = req.params;
+    const session = await Attendance.findOne({ _id: sessionId, doctor: req.user._id });
+    if (!session) return res.status(404).json({ message: "Session not found" });
+
+    session.isActive = false;
+    session.currentQrToken = null;
+    await session.save();
+
+    return res.status(200).json({ message: "Session closed" });
+  } catch (err) {
+    console.error("closeAttendanceSession error:", err);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+}
+
+async function getAttendanceHistory(req, res) {
+  try {
+    const { subject, group } = req.query;
+    const query = { doctor: req.user._id, isActive: false };
+    
+    // Resolve subject if provided as code
+    if (subject) {
+      const subDoc = await Subject.findOne({ code: { $regex: new RegExp(`^${subject}$`, "i") } }).lean();
+      if (subDoc) query.subject = subDoc._id;
+    }
+    if (group && group !== "all") query.group = group;
+
+    const sessions = await Attendance.find(query)
+      .populate("subject", "name code")
+      .populate("group", "name")
+      .sort({ date: -1 })
+      .lean();
+
+    const formatted = sessions.map(s => {
+      const total = s.records.length;
+      const present = s.records.filter(r => r.status === "present").length;
+      return {
+        _id: s._id,
+        subject: s.subject,
+        group: s.group,
+        date: s.date,
+        total,
+        present,
+        absent: total - present,
+        rate: total ? Math.round((present / total) * 100) : 0
+      };
+    });
+
+    return res.status(200).json({ sessions: formatted });
+  } catch (err) {
+    console.error("getAttendanceHistory error:", err);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+}
+
+// ─── COURSE DETAIL (single subject full info) ────────────────────────────────
+async function getCourseDetail(req, res) {
+  try {
+    const { subjectId } = req.params;
+    const subject = await Subject.findById(subjectId).lean();
+    if (!subject) return res.status(404).json({ message: "Subject not found" });
+
+    // Verify doctor teaches this
+    const schedules = await Schedule.find({ doctorId: req.user._id, subjectId }).populate("groupId", "name _id").lean();
+    if (!schedules.length) return res.status(403).json({ message: "Not your subject" });
+
+    const groupIds = [...new Set(schedules.map(s => s.groupId?._id.toString()).filter(Boolean))];
+    const groups   = schedules.filter(s => s.groupId).map(s => ({ _id: s.groupId._id, name: s.groupId.name }));
+    const uniqueGroups = groups.filter((v, i, a) => a.findIndex(x => x._id.toString() === v._id.toString()) === i);
+
+    const studentCount = groupIds.length ? await Student.countDocuments({ groupId: { $in: groupIds } }) : 0;
+    const exams        = await Exam.find({ subject: subjectId, doctor: req.user._id, isVisible: true }).sort({ date: 1 }).lean();
+    const assignments  = await Assignment.find({ subject: subjectId, doctor: req.user._id, isVisible: true }).sort({ dueDate: 1 }).lean();
+
+    // Submission stats per assignment
+    const assignmentsWithStats = assignments.map(a => ({
+      ...a,
+      submittedCount: a.submissions?.length || 0,
+      gradedCount:    a.submissions?.filter(s => s.status === "graded").length || 0,
+    }));
+
+    return res.status(200).json({ subject, groups: uniqueGroups, studentCount, exams, assignments: assignmentsWithStats });
+  } catch (err) {
+    console.error("getCourseDetail error:", err);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+}
+
+// ─── EXAMS (Quiz / Midterm / Final Scheduling) ───────────────────────────────
+async function createExam(req, res) {
+  try {
+    const { subjectId, title, type, date, time, duration, location, totalMarks, notes, groups } = req.body;
+    if (!subjectId || !title || !date || !time) return res.status(400).json({ message: "Missing required fields" });
+
+    // Verify ownership
+    const owns = await Schedule.findOne({ doctorId: req.user._id, subjectId });
+    if (!owns) return res.status(403).json({ message: "Not your subject" });
+
+    const exam = new Exam({ title, subject: subjectId, doctor: req.user._id, type, date, time, duration, location, totalMarks, notes, groups });
+    await exam.save();
+    return res.status(201).json({ exam });
+  } catch (err) {
+    console.error("createExam error:", err);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+}
+
+async function updateExam(req, res) {
+  try {
+    const exam = await Exam.findOne({ _id: req.params.examId, doctor: req.user._id });
+    if (!exam) return res.status(404).json({ message: "Exam not found" });
+    Object.assign(exam, req.body);
+    await exam.save();
+    return res.status(200).json({ exam });
+  } catch (err) {
+    console.error("updateExam error:", err);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+}
+
+async function deleteExam(req, res) {
+  try {
+    const exam = await Exam.findOneAndDelete({ _id: req.params.examId, doctor: req.user._id });
+    if (!exam) return res.status(404).json({ message: "Exam not found" });
+    return res.status(200).json({ message: "Deleted" });
+  } catch (err) {
+    console.error("deleteExam error:", err);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+}
+
+async function getExamsForSubject(req, res) {
+  try {
+    const { subjectId } = req.params;
+    const exams = await Exam.find({ subject: subjectId, doctor: req.user._id })
+      .sort({ date: 1 }).lean();
+    return res.status(200).json({ exams });
+  } catch (err) {
+    return res.status(500).json({ message: "Internal server error" });
+  }
+}
+
+// ─── ASSIGNMENTS ─────────────────────────────────────────────────────────────
+async function createAssignment(req, res) {
+  try {
+    const { subjectId, title, description, assignmentType, dueDate, maxGrade, groups } = req.body;
+    if (!subjectId || !title || !dueDate) return res.status(400).json({ message: "Missing required fields" });
+
+    const owns = await Schedule.findOne({ doctorId: req.user._id, subjectId });
+    if (!owns) return res.status(403).json({ message: "Not your subject" });
+
+    const assignment = new Assignment({ title, description, subject: subjectId, doctor: req.user._id, assignmentType, dueDate, maxGrade, groups });
+    await assignment.save();
+    return res.status(201).json({ assignment });
+  } catch (err) {
+    console.error("createAssignment error:", err);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+}
+
+async function updateAssignment(req, res) {
+  try {
+    const asgn = await Assignment.findOne({ _id: req.params.assignmentId, doctor: req.user._id });
+    if (!asgn) return res.status(404).json({ message: "Assignment not found" });
+    const { title, description, assignmentType, dueDate, maxGrade, isVisible } = req.body;
+    if (title !== undefined) asgn.title = title;
+    if (description !== undefined) asgn.description = description;
+    if (assignmentType !== undefined) asgn.assignmentType = assignmentType;
+    if (dueDate !== undefined) asgn.dueDate = dueDate;
+    if (maxGrade !== undefined) asgn.maxGrade = maxGrade;
+    if (isVisible !== undefined) asgn.isVisible = isVisible;
+    await asgn.save();
+    return res.status(200).json({ assignment: asgn });
+  } catch (err) {
+    console.error("updateAssignment error:", err);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+}
+
+async function deleteAssignment(req, res) {
+  try {
+    const asgn = await Assignment.findOneAndDelete({ _id: req.params.assignmentId, doctor: req.user._id });
+    if (!asgn) return res.status(404).json({ message: "Not found" });
+    // Also delete uploaded files
+    const __filename = fileURLToPath(import.meta.url);
+    const __dirname  = path.dirname(__filename);
+    for (const sub of asgn.submissions) {
+      if (sub.fileUrl) {
+        const filePath = path.join(__dirname, "..", sub.fileUrl);
+        fs.unlink(filePath).catch(() => {});
+      }
+    }
+    return res.status(200).json({ message: "Deleted" });
+  } catch (err) {
+    console.error("deleteAssignment error:", err);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+}
+
+async function getAssignmentSubmissions(req, res) {
+  try {
+    const asgn = await Assignment.findOne({ _id: req.params.assignmentId, doctor: req.user._id })
+      .populate("submissions.student", "firstName lastName nationalId email")
+      .lean();
+    if (!asgn) return res.status(404).json({ message: "Assignment not found" });
+    return res.status(200).json({ assignment: asgn });
+  } catch (err) {
+    console.error("getAssignmentSubmissions error:", err);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+}
+
+async function gradeSubmission(req, res) {
+  try {
+    const { assignmentId, studentId } = req.params;
+    const { grade, feedback } = req.body;
+    const asgn = await Assignment.findOne({ _id: assignmentId, doctor: req.user._id });
+    if (!asgn) return res.status(404).json({ message: "Assignment not found" });
+    const sub = asgn.submissions.find(s => s.student.toString() === studentId);
+    if (!sub) return res.status(404).json({ message: "Submission not found" });
+    sub.grade    = grade;
+    sub.feedback = feedback || "";
+    sub.status   = "graded";
+    await asgn.save();
+    return res.status(200).json({ message: "Graded", submission: sub });
+  } catch (err) {
+    console.error("gradeSubmission error:", err);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+}
+
 export default {
   getDoctorStats,
   getTodaySchedule,
   getDoctorCourses,
+  getCourseDetail,
   getDoctorGrades,
   updateGrade,
   getDoctorStudents,
@@ -526,4 +893,21 @@ export default {
   getDoctorSchedule,
   updateProfile,
   getAnnouncements,
+  startAttendanceSession,
+  refreshQrToken,
+  getAttendanceSession,
+  toggleManualAttendance,
+  closeAttendanceSession,
+  getAttendanceHistory,
+  // Exams
+  createExam,
+  updateExam,
+  deleteExam,
+  getExamsForSubject,
+  // Assignments
+  createAssignment,
+  updateAssignment,
+  deleteAssignment,
+  getAssignmentSubmissions,
+  gradeSubmission,
 };

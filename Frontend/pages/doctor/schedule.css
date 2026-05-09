@@ -1,0 +1,108 @@
+/* ─── Schedule Specific Styles ─── */
+.schedule-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.sch-day {
+  background: #f8fafc;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.sch-day-header {
+  background: #f1f5f9;
+  padding: 14px 20px;
+  font-weight: 700;
+  font-size: 1.25rem;
+  color: #1e293b;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.sch-day-content {
+  padding: 16px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.sch-card {
+  background: #fff;
+  border-radius: 10px;
+  padding: 16px;
+  border: 1px solid #e2e8f0;
+  flex: 1;
+  min-width: 250px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.sch-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 15px -3px rgba(0,0,0,0.05);
+}
+
+.sch-card::before {
+  content: "";
+  position: absolute;
+  top: 0; right: 0; bottom: 0; width: 4px;
+  background: var(--card-color, #2463eb);
+}
+
+.sch-time {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #64748b;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.sch-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin-bottom: 4px;
+}
+
+.sch-meta {
+  font-size: 1.05rem;
+  color: #475569;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.sch-badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  background: #f1f5f9;
+  color: #475569;
+  margin-top: 8px;
+  width: fit-content;
+}
+
+.empty-day {
+  padding: 20px;
+  text-align: center;
+  color: #94a3b8;
+  font-size: 1.1rem;
+  width: 100%;
+}
+
+@media print {
+  .sidebar, .topbar, .btn-outline { display: none !important; }
+  .portal-main { margin-right: 0 !important; width: 100% !important; padding: 0 !important; }
+  .panel { border: none !important; box-shadow: none !important; }
+  .sch-card { break-inside: avoid; border: 1px solid #cbd5e1 !important; }
+}

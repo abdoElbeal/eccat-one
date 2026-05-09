@@ -1,0 +1,70 @@
+/* ── Student Assignments Page ────────────────────────────────────────────── */
+
+/* Summary bar */
+.asgn-summary {
+  display: flex; gap: 12px; margin-bottom: 18px; flex-wrap: wrap;
+}
+.asgn-sum-item {
+  flex: 1; min-width: 100px;
+  background: #fff; border-radius: 14px; padding: 14px 16px;
+  box-shadow: 0 2px 8px rgba(0,0,0,.06); text-align: center;
+}
+.asgn-sum-item span { display: block; font-size: 2.2rem; font-weight: 800; }
+.asgn-sum-item small { font-size: 1.15rem; color: #64748b; }
+.asgn-sum-item.blue  span { color: #2463eb; }
+.asgn-sum-item.green span { color: #16a34a; }
+.asgn-sum-item.orange span { color: #ea580c; }
+.asgn-sum-item.red   span { color: #b91c1c; }
+.asgn-sum-item.purple span { color: #7c3aed; }
+
+/* Filter tabs */
+.asgn-tabs {
+  display: flex; gap: 0; border-bottom: 2px solid #f1f5f9;
+  margin-bottom: 20px; overflow-x: auto;
+}
+.asgn-tab {
+  padding: 10px 20px; border: none; background: none;
+  font-family: inherit; font-size: 1.3rem; font-weight: 600; color: #64748b;
+  cursor: pointer; border-bottom: 2px solid transparent; transition: all .2s; white-space: nowrap;
+}
+.asgn-tab.active { color: #2463eb; border-bottom-color: #2463eb; }
+.asgn-tab:hover:not(.active) { background: #f8fafc; }
+
+/* Assignment card */
+.asgn-card {
+  background: #fff; border-radius: 16px; padding: 20px 22px;
+  box-shadow: 0 2px 8px rgba(0,0,0,.06); margin-bottom: 14px;
+  display: flex; gap: 20px; align-items: flex-start; justify-content: space-between;
+  border-right: 4px solid #e2e8f0; transition: box-shadow .2s;
+}
+.asgn-card:hover { box-shadow: 0 6px 20px rgba(0,0,0,.1); }
+.asgn-card.overdue  { border-right-color: #ef4444; background: #fff5f5; }
+.asgn-card.urgent   { border-right-color: #f59e0b; }
+
+.asgn-card-left { flex: 1; }
+.asgn-card-right { display: flex; flex-direction: column; align-items: flex-end; flex-shrink: 0; }
+
+.asgn-subject-badge {
+  display: inline-block; background: #eff6ff; color: #2463eb;
+  font-size: 1.1rem; font-weight: 700; padding: 2px 12px;
+  border-radius: 20px; margin-bottom: 8px;
+}
+.asgn-card-title { font-size: 1.5rem; font-weight: 800; color: #0f172a; margin-bottom: 6px; }
+.asgn-card-desc  { font-size: 1.25rem; color: #64748b; line-height: 1.5; margin-bottom: 10px; }
+.asgn-card-meta  { display: flex; flex-wrap: wrap; gap: 14px; font-size: 1.2rem; color: #64748b; margin-bottom: 8px; }
+.asgn-due        { font-size: 1.2rem; color: #475569; font-weight: 600; }
+.asgn-due.urgent-text { color: #ea580c; }
+.asgn-feedback   { margin-top: 8px; font-size: 1.2rem; color: #7c3aed; background: #f5f3ff; padding: 6px 12px; border-radius: 8px; }
+
+.asgn-status-pill {
+  padding: 5px 16px; border-radius: 20px;
+  font-size: 1.2rem; font-weight: 700; white-space: nowrap;
+}
+
+/* Drop zone hover */
+#dropZone:hover { border-color: #2463eb !important; background: #eff6ff; }
+
+@media (max-width: 700px) {
+  .asgn-card { flex-direction: column; }
+  .asgn-card-right { align-items: flex-start; flex-direction: row; gap: 8px; flex-wrap: wrap; }
+}

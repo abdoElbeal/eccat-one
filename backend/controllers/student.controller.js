@@ -5,10 +5,14 @@ import Exam         from "../models/Exam.js";
 import Grade        from "../models/Grade.js";
 import User         from "../models/User.js";
 import Support      from "../models/Support.js";
+import Attendance   from "../models/Attendance.js";
+import Billing      from "../models/Billing.js";
+import Assignment   from "../models/Assignment.js";
 import path         from "path";
 import fs           from "fs/promises";
 import { randomUUID } from "crypto";
 import { fileURLToPath } from "url";
+
 
 // ─── HELPER ───────────────────────────────────────────────────────────────────
 // Safely get student doc with populated department/groupId
@@ -112,27 +116,48 @@ async function getUpcomingExams(req, res) {
   try {
     const student = await Student.findById(req.user._id).select("groupId").lean();
     if (!student) return res.status(404).json({ message: "Student not found" });
-    if (!student.groupId) return res.status(200).json({ exams: [] });
 
     const { subjectId } = req.query;
-    const query = { groupId: student.groupId, date: { $gte: new Date() } };
-    if (subjectId) query.subject = subjectId;
+    
+    // 1. Determine which subjects to look for
+    let subjectIds = [];
+    if (subjectId) {
+      subjectIds = [subjectId];
+    } else if (student.groupId) {
+      const schedules = await Schedule.find({ groupId: student.groupId }).select("subjectId").lean();
+      subjectIds = [...new Set(schedules.map(s => s.subjectId.toString()))];
+    }
+
+    if (!subjectIds.length) return res.status(200).json({ exams: [] });
+
+    // 2. Build Query
+    const query = {
+      subject: { $in: subjectIds },
+      date: { $gte: new Date() },
+      isVisible: true,
+      $or: [
+        { groups: { $size: 0 } }, // For all groups
+        { groups: student.groupId } // For specific group
+      ]
+    };
 
     const exams = await Exam
       .find(query)
       .populate("subject", "name code")
       .sort({ date: 1 })
-      .limit(6)
+      .limit(subjectId ? 20 : 6)
       .lean();
 
     const formatted = exams.map(e => ({
-      name:     e.courseName || e.subject?.name || "—",
+      _id:      e._id,
+      name:     e.subject?.name || "—",
       code:     e.subject?.code || "",
       date:     e.date,
       time:     e.time || "—",
       hall:     e.location || "—",
       location: e.location || "—",
       type:     e.type || "امتحان",
+      notes:    e.notes || "",
     }));
 
     return res.status(200).json({ exams: formatted });
@@ -592,7 +617,60 @@ export default {
   updateProfile,
   createSupportTicket,
   getMySupportTickets,
+  scanQrCode,
 };
+
+// ─── 8. ATTENDANCE ────────────────────────────────────────────────────────────
+export async function scanQrCode(req, res) {
+  try {
+    const { token } = req.body;
+    if (!token) return res.status(400).json({ message: "Token is required" });
+
+    // Find the active session with this exact token
+    const session = await Attendance.findOne({ currentQrToken: token, isActive: true });
+    if (!session) return res.status(400).json({ message: "رمز الاستجابة السريعة (QR) غير صالح أو منتهي الصلاحية" });
+
+    if (new Date() > session.tokenExpiresAt) {
+      return res.status(400).json({ message: "انتهت صلاحية الرمز، يرجى مسح الرمز الجديد" });
+    }
+
+    // Find the student record in this session
+    const record = session.records.find(r => r.student.toString() === req.user._id.toString());
+    if (!record) {
+      return res.status(403).json({ message: "أنت لست مسجلاً في هذه المجموعة/المحاضرة" });
+    }
+
+    if (record.status === "present") {
+      return res.status(400).json({ message: "تم تسجيل حضورك مسبقاً لهذه المحاضرة" });
+    }
+
+    // Mark as present
+    record.status = "present";
+    record.method = "qr";
+    record.markedAt = new Date();
+    await session.save();
+
+    return res.status(200).json({ message: "تم تسجيل الحضور بنجاح ✅" });
+  } catch (err) {
+    console.error("scanQrCode error:", err);
+    return res.status(500).json({ message: "حدث خطأ داخلي في الخادم" });
+  }
+}
+
+// ─── 9. FINANCIALS ────────────────────────────────────────────────────────────
+export async function getMyBills(req, res) {
+  try {
+    const bills = await Billing.find({ student: req.user._id })
+      .populate("transactions.recordedBy", "firstName lastName")
+      .sort({ createdAt: -1 })
+      .lean();
+    return res.status(200).json({ bills });
+  } catch (err) {
+    console.error("getMyBills error:", err);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+}
+
 // ─── 7. SUPPORT ─────────────────────────────────────────────────────────────
 export async function createSupportTicket(req, res) {
   try {
@@ -622,5 +700,112 @@ export async function getMySupportTickets(req, res) {
     res.status(200).json({ tickets });
   } catch (err) {
     res.status(500).json({ message: err.message });
+  }
+}
+
+// ─── 8. ASSIGNMENTS (Student View & Submit) ───────────────────────────────────
+export async function getMyAssignments(req, res) {
+  try {
+    const student = await Student.findById(req.user._id).select("groupId").lean();
+    if (!student) return res.status(404).json({ message: "Student not found" });
+
+    // Find all assignments for this student's group (or all groups of their courses)
+    const schedules = await Schedule.find({ groupId: student.groupId }).select("subjectId").lean();
+    const subjectIds = [...new Set(schedules.map(s => s.subjectId?.toString()).filter(Boolean))];
+
+    const assignments = await Assignment.find({
+      subject: { $in: subjectIds },
+      isVisible: true,
+      $or: [
+        { groups: { $in: [student.groupId] } },
+        { groups: { $size: 0 } },  // empty groups = all students
+      ],
+    })
+      .populate("subject", "name code")
+      .populate("doctor", "firstName lastName")
+      .sort({ dueDate: 1 })
+      .lean();
+
+    // For each assignment, find if this student has submitted
+    const withSubmission = assignments.map(a => {
+      const mySub = a.submissions?.find(s => s.student?.toString() === req.user._id.toString());
+      return {
+        _id: a._id,
+        title: a.title,
+        description: a.description,
+        assignmentType: a.assignmentType,
+        dueDate: a.dueDate,
+        maxGrade: a.maxGrade,
+        subject: a.subject,
+        doctor: a.doctor ? `${a.doctor.firstName} ${a.doctor.lastName}` : "—",
+        isOverdue: new Date(a.dueDate) < new Date(),
+        mySubmission: mySub ? {
+          submittedAt: mySub.submittedAt,
+          status: mySub.status,
+          grade: mySub.grade,
+          feedback: mySub.feedback,
+          fileName: mySub.fileName,
+          fileUrl: mySub.fileUrl,
+        } : null,
+      };
+    });
+
+    return res.status(200).json({ assignments: withSubmission });
+  } catch (err) {
+    console.error("getMyAssignments error:", err);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+}
+
+export async function submitAssignment(req, res) {
+  try {
+    const { assignmentId } = req.params;
+    const { notes } = req.body;
+
+    const asgn = await Assignment.findById(assignmentId);
+    if (!asgn) return res.status(404).json({ message: "Assignment not found" });
+    if (!asgn.isVisible) return res.status(403).json({ message: "Assignment is closed" });
+
+    // Check if already submitted
+    const alreadyIdx = asgn.submissions.findIndex(s => s.student.toString() === req.user._id.toString());
+
+    let fileUrl = "";
+    let fileName = "";
+
+    if (asgn.assignmentType === "pdf") {
+      if (!req.file) return res.status(400).json({ message: "يرجى رفع ملف PDF" });
+      const __filename = fileURLToPath(import.meta.url);
+      const __dirname  = path.dirname(__filename);
+      const uploadDir  = path.join(__dirname, "..", "uploads", "assignments");
+      await fs.mkdir(uploadDir, { recursive: true });
+      fileName = `${randomUUID()}_${req.file.originalname}`;
+      await fs.writeFile(path.join(uploadDir, fileName), req.file.buffer);
+      fileUrl  = `/uploads/assignments/${fileName}`;
+    }
+
+    const isLate = new Date(asgn.dueDate) < new Date();
+
+    const submissionData = {
+      student: req.user._id,
+      submittedAt: new Date(),
+      fileUrl,
+      fileName: req.file?.originalname || "",
+      submissionType: asgn.assignmentType,
+      notes: notes || "",
+      status: isLate ? "late" : "submitted",
+    };
+
+    if (alreadyIdx >= 0) {
+      // Re-submission: replace
+      asgn.submissions[alreadyIdx] = { ...asgn.submissions[alreadyIdx]._doc, ...submissionData };
+    } else {
+      asgn.submissions.push(submissionData);
+    }
+
+    await asgn.save();
+    return res.status(200).json({ message: isLate ? "تم التسليم (متأخر)" : "تم التسليم بنجاح" });
+  } catch (err) {
+    console.error("submitAssignment error:", err);
+    return res.status(500).json({ message: "Internal server error" });
   }
 }

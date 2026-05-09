@@ -1,28 +1,50 @@
-/* Students page */
-.filter-select {
-  padding: 9px 14px;
-  border: 1.5px solid #e2e8f0; border-radius: 10px;
-  font-size: 1.3rem; font-family: inherit; color: #0f172a;
-  background: #fff; outline: none; direction: rtl; cursor: pointer;
-}
-.filter-select:focus { border-color: #2463eb; }
+/* ── Doctor Students CSS ───────────────────────────────────────────────────── */
 
-.grade-pill {
-  display: inline-block; padding: 4px 12px; border-radius: 20px;
-  font-size: 1.3rem; font-weight: 700;
-}
-.grade-pill.excellent { background: #f0fdf4; color: #16a34a; }
-.grade-pill.good { background: #eff6ff; color: #2463eb; }
-.grade-pill.risk { background: #fef2f2; color: #ef4444; }
+.stat-card-value.purple { color: #7c3aed; }
 
-.attend-bar { 
-  height: 6px; background: #e2e8f0; border-radius: 100px;
-  overflow: hidden; width: 70px; display: inline-block; margin-left: 6px; vertical-align: middle;
-}
-.attend-fill { height: 100%; border-radius: 100px; }
+.grade-pill { border-radius: 20px; padding: 3px 12px; font-weight: 700; font-size: 1.2rem; white-space: nowrap; }
+.grade-pill.excellent { background: #dcfce7; color: #16a34a; }
+.grade-pill.good      { background: #dbeafe; color: #2463eb; }
+.grade-pill.risk      { background: #fee2e2; color: #b91c1c; }
 
-.status-chip { display: inline-flex; align-items: center; padding: 4px 10px; border-radius: 20px; font-size: 1.2rem; font-weight: 600; }
-.status-chip.excellent { background: #f0fdf4; color: #16a34a; }
-.status-chip.good { background: #eff6ff; color: #2463eb; }
-.status-chip.risk { background: #fef2f2; color: #ef4444; }
-.status-chip.absent { background: #fff7ed; color: #ea580c; }
+.status-chip { padding: 3px 12px; border-radius: 20px; font-size: 1.15rem; font-weight: 700; white-space: nowrap; }
+.status-chip.excellent { background: #dcfce7; color: #16a34a; }
+.status-chip.good      { background: #dbeafe; color: #2463eb; }
+.status-chip.risk      { background: #fee2e2; color: #b91c1c; }
+
+.attend-bar {
+  height: 6px; background: #f1f5f9; border-radius: 4px; overflow: hidden;
+  margin-bottom: 4px; width: 90px;
+}
+.attend-fill { height: 100%; border-radius: 4px; transition: width 0.6s; }
+
+.action-btns { display: flex; gap: 6px; align-items: center; }
+.action-btn {
+  width: 32px; height: 32px; border: none; border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; transition: all 0.2s;
+}
+.action-btn svg { width: 15px; height: 15px; stroke: currentColor; fill: none; stroke-width: 2; }
+.action-btn.edit { background: #eff6ff; color: #2463eb; }
+.action-btn.edit:hover { background: #dbeafe; }
+.action-btn.view { background: #f5f3ff; color: #7c3aed; }
+.action-btn.view:hover { background: #ede9fe; }
+
+/* Pagination */
+.pagination-wrap {
+  display: flex; gap: 6px; justify-content: center;
+  padding: 16px 0 4px; flex-wrap: wrap;
+}
+.page-btn {
+  min-width: 36px; height: 36px; padding: 0 10px;
+  border: 1.5px solid #e2e8f0; border-radius: 8px; background: #fff;
+  font-family: inherit; font-size: 1.3rem; cursor: pointer; transition: all 0.2s;
+  display: flex; align-items: center; justify-content: center;
+}
+.page-btn:hover:not(:disabled) { border-color: #2463eb; color: #2463eb; }
+.page-btn.active { background: #2463eb; color: #fff; border-color: #2463eb; font-weight: 700; }
+.page-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+/* Row hover highlight */
+.data-table tbody tr:hover { background: #f8fafc; }
+.data-table tbody tr { cursor: pointer; transition: background 0.15s; }

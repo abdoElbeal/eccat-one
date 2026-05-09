@@ -49,6 +49,7 @@ body {
 .sidebar-nav {
   flex: 1; padding: 12px 0;
   display: flex; flex-direction: column; gap: 2px;
+  overflow-y: auto;
 }
 
 .nav-item {
@@ -320,38 +321,39 @@ body {
 
 /* ── Tablets ── */
 @media (max-width: 900px) {
-  /* Show hamburger, hide sidebar by default */
   .hamburger-btn { display: flex; }
-
   .sidebar {
     transform: translateX(100%);
-    width: 240px;
-    min-width: 240px;
-    z-index: 200;
-    transition: transform .28s cubic-bezier(.4,0,.2,1);
-    box-shadow: -4px 0 24px rgba(0,0,0,.15);
+    width: 260px;
+    min-width: 260px;
+    z-index: 2000;
+    transition: transform .3s cubic-bezier(.4,0,.2,1);
+    box-shadow: -10px 0 30px rgba(0,0,0,0.2);
   }
-
   .portal-main { margin-right: 0; }
+  .topbar { padding: 8px 16px; gap: 12px; height: 60px; }
+  .topbar-search { display: none; }
+  .page-body { padding: 16px 12px; }
+  .grid-2 { grid-template-columns: 1fr; gap: 12px; }
+  .stat-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 10px; }
+}
 
-  /* Topbar */
-  .topbar { padding: 10px 16px; gap: 10px; }
-  .topbar-search { max-width: 200px; }
+/* ── Mobile (large phones) ── */
+@media (max-width: 640px) {
+  .topbar-logo { font-size: 1.4rem; }
+  .topbar-user-info { display: none; }
+  .page-header h1 { font-size: 2rem; }
+  .stat-card-value { font-size: 2.2rem; }
+  .modal { border-radius: 12px; }
+  .modal-footer .btn { flex: 1; justify-content: center; }
+  .data-table { min-width: 600px; }
+  .btn { padding: 10px 16px; } /* Larger touch area */
+}
 
-  /* Page body */
-  .page-body { padding: 18px 16px; }
-
-  /* Grids */
-  .grid-2 { grid-template-columns: 1fr; }
-
-  /* Panel header wraps */
-  .panel-header { flex-wrap: wrap; }
-
-  /* Filter bar */
-  .filter-bar { flex-wrap: wrap; gap: 8px; }
-
-  /* Stat grid: 2 columns */
-  .stat-grid { grid-template-columns: repeat(2, 1fr) !important; }
+/* ── Small phones ── */
+@media (max-width: 400px) {
+  .stat-grid { grid-template-columns: 1fr !important; }
+  .topbar-logo { display: none; }
 }
 
 /* ── Mobile (large phones) ── */

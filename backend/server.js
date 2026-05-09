@@ -10,7 +10,9 @@ const server = http.createServer(app);
 async function initServer() {
   await connectDB();
   server.listen(PORT, () => {
-    console.log(`[Server] Running on port ${PORT} — ${process.env.NODE_ENV || "development"} mode`);
+    console.log(
+      `[Server] Running on port ${PORT} — ${process.env.NODE_ENV || "development"} mode`,
+    );
   });
 }
 
@@ -25,6 +27,6 @@ function gracefulShutdown(signal) {
 }
 
 process.on("SIGTERM", () => gracefulShutdown("SIGTERM"));
-process.on("SIGINT",  () => gracefulShutdown("SIGINT"));
+process.on("SIGINT", () => gracefulShutdown("SIGINT"));
 
 initServer();

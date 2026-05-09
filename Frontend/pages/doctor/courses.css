@@ -28,3 +28,42 @@
 .ccs-label { font-size: 1.1rem; color: #64748b; }
 .cc-progress-row { display: flex; justify-content: space-between; margin-bottom: 6px; font-size: 1.2rem; color: #64748b; }
 .cc-actions { display: flex; gap: 8px; margin-top: 14px; }
+
+/* ── Detail Modal Tabs ── */
+.detail-tab {
+  flex:1; padding:12px 8px; border:none; background:none;
+  font-family:inherit; font-size:1.3rem; font-weight:600; color:#64748b;
+  cursor:pointer; border-bottom:2px solid transparent; transition:all .2s;
+}
+.detail-tab.active { color:#2463eb; border-bottom-color:#2463eb; background:#eff6ff; }
+.detail-tab:hover:not(.active) { background:#f8fafc; }
+
+/* ── Exam rows ── */
+.exam-row {
+  display:flex; align-items:flex-start; gap:14px;
+  padding:14px 0; border-bottom:1px solid #f1f5f9; flex-wrap:wrap;
+}
+.exam-type-badge {
+  padding:4px 14px; border-radius:20px; font-size:1.2rem; font-weight:700;
+  flex-shrink:0; white-space:nowrap;
+}
+.exam-info { flex:1; min-width:200px; }
+.exam-title { font-size:1.3rem; font-weight:700; color:#0f172a; }
+.exam-meta  { font-size:1.15rem; color:#64748b; margin-top:3px; }
+
+/* ── Assignment rows ── */
+.asgn-row {
+  display:flex; align-items:flex-start; justify-content:space-between; gap:14px;
+  padding:14px 0; border-bottom:1px solid #f1f5f9; flex-wrap:wrap;
+}
+.asgn-title { font-size:1.3rem; font-weight:700; color:#0f172a; }
+.asgn-meta  { font-size:1.15rem; color:#64748b; margin-top:3px; }
+
+/* ── Submissions badge ── */
+.submissions-badge {
+  background:#eff6ff; color:#2463eb; padding:4px 14px;
+  border-radius:20px; font-size:1.15rem; font-weight:700;
+  cursor:pointer; transition:background .2s; white-space:nowrap;
+}
+.submissions-badge:hover { background:#dbeafe; }
+

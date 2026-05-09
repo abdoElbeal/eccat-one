@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>الماليات | بوابة الطالب</title>
+    <meta name="description" content="إدارة ومتابعة فواتيرك ورسومك الدراسية" />
+    <link rel="stylesheet" href="user.css" />
+  </head>
+  <body>
+    <div class="portal-layout">
+
+      <!-- Sidebar -->
+          <aside class="sidebar">
+    <a href="dashboard.html" class="sidebar-brand">
+      <div class="sidebar-brand-icon"><svg viewBox="0 0 24 24"><path d="M12 3 2 8l10 5 10-5-10-5ZM2 15l10 5 10-5M2 10l10 5 10-5"/></svg></div>
+      <div class="sidebar-brand-text"><strong>بوابة الطالب</strong><span>جامعة التميز</span></div>
+    </a>
+    <nav class="sidebar-nav">
+      <a href="dashboard.html"   class="nav-item"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>لوحة القيادة</a>
+      <a href="courses.html"     class="nav-item"><svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>موادي الدراسية</a>
+      <a href="schedule.html"    class="nav-item"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>الجدول الدراسي</a>
+      <a href="attendance.html"  class="nav-item"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>الحضور الذكي</a>
+      <a href="grades.html"      class="nav-item"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>النتائج والدرجات</a>
+      <a href="assignments.html" class="nav-item"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>الواجبات</a>
+      <a href="leaderboard.html" class="nav-item"><svg viewBox="0 0 24 24"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6M18 9h1.5a2.5 2.5 0 0 0 0-5H18M4 22h16"/></svg>لوحة الشرف</a>
+      <a href="announcements.html" class="nav-item"><svg viewBox="0 0 24 24"><path d="M22 17H2a3 3 0 0 0 3-3V9a7 7 0 0 1 14 0v5a3 3 0 0 0 3 3zm-8.27 4a2 2 0 0 1-3.46 0"/></svg>الإعلانات</a>
+      <a href="financials.html"  class="nav-item active"><svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>الماليات</a>
+      <a href="messages.html"    class="nav-item"><svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>الرسائل</a>
+      <a href="support.html"     class="nav-item"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>الدعم الفني</a>
+    </nav>
+    <div class="sidebar-footer">
+      <button class="support-btn">الدعم الفني</button>
+      <a href="../shared/profile.html" class="nav-item"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>الإعدادات</a>
+      <button class="nav-item logout" id="logoutBtn"><svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/></svg>تسجيل الخروج</button>
+    </div>
+  </aside>
+
+      <!-- Main -->
+      <div class="portal-main">
+        <!-- Topbar -->
+        <header class="topbar">
+          <button class="hamburger-btn" id="hamburgerBtn" aria-label="فتح القائمة" aria-expanded="false"><svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+          <div class="topbar-avatar" id="topbarAvatar">
+            <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          </div>
+          <button class="topbar-icon-btn" aria-label="إشعارات">
+            <svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+            <span class="notif-dot"></span>
+          </button>
+          <button class="topbar-icon-btn" aria-label="ترجمة">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#475569" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 8l6 6"/><path d="M4 14l6-6 2-3"/><path d="M2 5h12"/><path d="M7 2h1"/><path d="M22 22l-5-10-5 10"/><path d="M14 18h6"/></svg>
+          </button>
+          <div class="topbar-search">
+            <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+            <input type="text" placeholder="البحث عن المواد أو المحاضرات..." />
+          </div>
+          <a href="dashboard.html" class="topbar-logo">Academic Curator</a>
+        </header>
+
+        <!-- Page body -->
+        <main class="page-body">
+          <!-- Header -->
+          <div class="page-header" style="margin-bottom:20px;">
+            <h1>الماليات والرسوم الدراسية</h1>
+            <p>تابع حالة الفواتير والمدفوعات الخاصة بك</p>
+          </div>
+
+          <!-- Stat cards -->
+          <div class="stat-grid" style="display:flex;gap:20px;margin-bottom:20px;">
+            <div class="stat-card" style="flex:1;">
+              <div class="stat-card-icon" style="background:#eff6ff;">
+                <svg viewBox="0 0 24 24" style="fill:#2463eb;"><rect x="2" y="4" width="20" height="16" rx="2" ry="2"/></svg>
+              </div>
+              <div class="stat-card-value" id="statTotalOwed">0 ج.م</div>
+              <div class="stat-card-label">إجمالي الفواتير</div>
+            </div>
+            <div class="stat-card" style="flex:1;">
+              <div class="stat-card-icon" style="background:#f0fdf4;">
+                <svg viewBox="0 0 24 24" style="fill:#16a34a;"><polyline points="20 6 9 17 4 12"/></svg>
+              </div>
+              <div class="stat-card-value" id="statTotalPaid" style="color:#16a34a;">0 ج.م</div>
+              <div class="stat-card-label">إجمالي المدفوعات</div>
+            </div>
+            <div class="stat-card" style="flex:1;">
+              <div class="stat-card-icon" style="background:#fef2f2;">
+                <svg viewBox="0 0 24 24" style="fill:#dc2626;"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+              </div>
+              <div class="stat-card-value" id="statRemaining" style="color:#dc2626;">0 ج.م</div>
+              <div class="stat-card-label">المبلغ المتبقي للجامعة</div>
+            </div>
+          </div>
+
+          <!-- Bills Table -->
+          <div class="panel">
+            <div class="panel-header"><h2>فواتير الطالب</h2></div>
+            <div class="table-wrap">
+              <table class="user-table" style="width:100%;border-collapse:collapse;text-align:right;">
+                <thead>
+                  <tr style="border-bottom:1px solid #e2e8f0;">
+                    <th style="padding:12px;">وصف الفاتورة</th>
+                    <th style="padding:12px;">الفصل / السنة</th>
+                    <th style="padding:12px;">المبلغ الكلي</th>
+                    <th style="padding:12px;">تم سداده</th>
+                    <th style="padding:12px;">المتبقي</th>
+                    <th style="padding:12px;">الحالة</th>
+                  </tr>
+                </thead>
+                <tbody id="billsTableBody">
+                  <tr><td colspan="6" class="text-center" style="padding:20px;">جارٍ التحميل...</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+
+    <!-- Support Modal -->
+    <div id="supportModal" class="modal" style="display:none; position:fixed; z-index:1000; left:0; top:0; width:100%; height:100%; background:rgba(0,0,0,0.5); align-items:center; justify-content:center;">
+      <div class="modal-content" style="background:#fff; padding:24px; border-radius:16px; width:100%; max-width:500px; box-shadow:0 10px 25px rgba(0,0,0,0.1);">
+        <h2 style="margin-bottom:16px; font-size:1.6rem; color:#1e293b;">تواصل مع الدعم الفني</h2>
+        <div style="margin-bottom:12px;">
+          <label style="display:block; margin-bottom:6px; font-size:1.1rem; color:#64748b;">الموضوع</label>
+          <input type="text" id="supportSubject" placeholder="مثلاً: مشكلة في الدخول، خطأ في الدرجات..." style="width:100%; padding:10px; border:1px solid #e2e8f0; border-radius:8px;">
+        </div>
+        <div style="margin-bottom:16px;">
+          <label style="display:block; margin-bottom:6px; font-size:1.1rem; color:#64748b;">الرسالة</label>
+          <textarea id="supportMessage" rows="5" placeholder="اشرح مشكلتك هنا بالتفصيل..." style="width:100%; padding:10px; border:1px solid #e2e8f0; border-radius:8px; resize:none;"></textarea>
+        </div>
+        <div style="display:flex; gap:12px; justify-content:flex-end;">
+          <button id="closeSupport" class="btn btn-secondary">إلغاء</button>
+          <button id="sendSupport" class="btn btn-primary">إرسال الطلب</button>
+        </div>
+      </div>
+    </div>
+
+    <script src="../../config.js"></script>
+    <script src="../shared/portal-utils.js"></script>
+    <script src="financials.js"></script>
+    <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+    <script src="../shared/sidebar-toggle.js"></script>
+
+  </body>
+</html>

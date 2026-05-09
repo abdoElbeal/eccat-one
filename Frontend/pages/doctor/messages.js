@@ -1,9 +1,9 @@
 // ─── Doctor Messages JS ──────────────────────────────────────────────────────
 const auth = PortalUtils.guard("doctor");
-if (auth) init();
-
 let activeConvId   = "";
 let activeConvName = "";
+
+if (auth) init();
 
 function init() {
   // Logout handled by PortalUtils
@@ -87,13 +87,18 @@ function openConv(el) {
   activeConvId = id;
   activeConvName = name;
 
-  document.getElementById("chName").textContent = name;
-  document.getElementById("chAvatar").textContent = name.slice(0, 2);
-  document.getElementById("ipName").textContent = name;
-  document.getElementById("ipAvatar").textContent = name.slice(0, 2);
-  
-  document.getElementById("chatWelcome").style.display = "none";
-  document.getElementById("chatMain").style.display = "flex";
+  const chName = document.getElementById("chName");
+  const chAvatar = document.getElementById("chAvatar");
+  const ipName = document.getElementById("ipName");
+  const ipAvatar = document.getElementById("ipAvatar");
+  if (chName) chName.textContent = name;
+  if (chAvatar) chAvatar.textContent = name.slice(0, 2);
+  if (ipName) ipName.textContent = name;
+  if (ipAvatar) ipAvatar.textContent = name.slice(0, 2);
+
+  // Clear fake data, show real chat
+  const chatBody = document.getElementById("chatBody");
+  if (chatBody) chatBody.innerHTML = '<div style="text-align:center;padding:20px;color:#94a3b8;">جارٍ التحميل...</div>';
 
   loadMessages(id);
 }
@@ -147,11 +152,15 @@ async function sendMessage() {
     const res = await fetch(`${window.CONFIG.API_BASE_URL}/api/messages`, {
       method: "POST",
       headers: PortalUtils.getAuthHeaders(),
-      body: JSON.stringify({ conversationId: activeConvId, content: text }),
+      body: JSON.stringify({ to: activeConvId, content: text }),
     });
+    const data = await res.json();
     if (res.ok) {
       loadMessages(activeConvId, true);
-      loadConversations(); // Update last message in list
+      loadConversations();
+    } else {
+      input.value = text; // restore on error
+      alert(data.message || "حدث خطأ أثناء الإرسال");
     }
   } catch (err) { console.error(err); }
 }
@@ -176,7 +185,7 @@ async function fetchSuggestions() {
         <div class="avatar" style="width:32px;height:32px;font-size:1.1rem;">${u.name.slice(0, 2)}</div>
         <div>
           <div style="font-weight:600;">${u.name}</div>
-          <div class="text-muted" style="font-size:1rem;">${u.role === 'student' ? 'طالب' : 'زميل'}</div>
+          <div class="text-muted" style="font-size:1rem;">${u.role === 'student' ? 'طالب' : u.role === 'admin' ? 'مدير' : 'زميل'}</div>
         </div>
       </div>`).join("");
     
@@ -202,19 +211,31 @@ async function sendNewMessage() {
       headers: PortalUtils.getAuthHeaders(),
       body: JSON.stringify({ to: toId, content: text }),
     });
+    const data = await res.json();
     if (res.ok) {
       closeModal();
       loadConversations();
+    } else {
+      alert(data.message || "حدث خطأ أثناء الإرسال");
     }
   } catch (err) { console.error(err); }
 }
 
-// ─── Utilities ────────────────────────────────────────────────────────────────
+// ─── Utilities ───────────────────────────────────────────────────────────────────
 function closeModal() {
   document.getElementById("newMsgModal").style.display = "none";
   document.getElementById("toInput").value = "";
+  document.getElementById("toInput").removeAttribute("data-selected-id");
   document.getElementById("newMsgText").value = "";
 }
 function scrollToBottom() { const b = document.getElementById("chatBody"); if (b) b.scrollTop = b.scrollHeight; }
 function escHtml(str) { return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"); }
 function debounce(fn, d) { let t; return (...a) => { clearTimeout(t); t = setTimeout(() => fn(...a), d); }; }
+function filterConversations(q) {
+  const items = document.querySelectorAll(".conv-item");
+  const search = q.toLowerCase();
+  items.forEach(el => {
+    const name = (el.dataset.name || "").toLowerCase();
+    el.style.display = name.includes(search) ? "" : "none";
+  });
+}

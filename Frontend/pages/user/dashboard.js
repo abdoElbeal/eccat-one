@@ -208,9 +208,15 @@ async function loadUpcomingExams() {
       const day = date.getDate();
       const month = date.toLocaleDateString("ar-EG", { month: "short" });
 
+      const LABELS = { quiz:"كويز", midterm:"ميدتيرم", final:"نهائي", lab:"عملي", oral:"شفهي" };
+      const COLORS = { quiz:"#7c3aed", midterm:"#2463eb", final:"#ea580c", lab:"#16a34a", oral:"#0891b2" };
+      
+      const lbl = LABELS[ex.type] || ex.type || "امتحان";
+      const clr = COLORS[ex.type] || "#2463eb";
+
       return `
-        <div class="exam-item">
-          <div class="exam-date">
+        <div class="exam-item" style="border-right: 4px solid ${clr};">
+          <div class="exam-date" style="background:${clr}12; color:${clr};">
             <span class="exam-day">${day}</span>
             <span class="exam-month">${month}</span>
           </div>
@@ -221,7 +227,7 @@ async function loadUpcomingExams() {
               <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> ${ex.time || '--:--'}</span>
             </div>
           </div>
-          <div class="exam-status ${ex.type === 'midterm' ? 'urgent' : ''}">${ex.type === 'midterm' ? 'ميدتيرم' : 'نهائي'}</div>
+          <div class="exam-status" style="background:${clr}20; color:${clr};">${lbl}</div>
         </div>
       `;
     }).join("");
